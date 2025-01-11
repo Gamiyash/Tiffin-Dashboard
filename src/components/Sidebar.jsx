@@ -17,7 +17,7 @@ export default function Sidebar() {
 
   // Main container: dark gray background, white text, smooth width transitions
   const sidebarClasses = `
-    ${expanded ? "w-64" : "w-20"}
+    ${expanded ? "w-64" : "w-14"}
     flex flex-col
     border-r border-gray-800
     bg-gray-900

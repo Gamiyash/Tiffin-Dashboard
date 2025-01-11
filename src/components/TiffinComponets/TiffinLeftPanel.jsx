@@ -82,7 +82,7 @@ const TiffinLeftPanel = ({ mealTypes = [], instructions = [], onSelectMealType, 
     }
 
     return (
-        <div className="w-1/2 bg-gray-50 border-r border-gray-200 p-4 flex flex-col h-full overflow-y-auto custom-scrollbar">
+        <div className="w-1/3 bg-gray-50 border-r border-gray-200 p-4 flex flex-col h-full overflow-y-auto custom-scrollbar">
             <section className="top-sec h-full">
                 <h1 className="text-xl font-semibold mb-4 text-gray-700">Tiffin Details</h1>
                 {/* Meal Types Dropdown */}
@@ -176,7 +176,7 @@ const TiffinLeftPanel = ({ mealTypes = [], instructions = [], onSelectMealType, 
             </section>
             <section className="bottom-sec">
                 <div className="mt-4 pt-4 border-t border-gray-200">
-                    <div className="grid grid-cols-2 w-full gap-2">
+                    <div className="flex flex-col w-full gap-2">
                         <button
                             onClick={() => handleSelectedComponet("Add-Meal")}
                             className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 transition-all"

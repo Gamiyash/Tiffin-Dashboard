@@ -15,22 +15,23 @@ export default function AddTiffin() {
         <div className="flex flex-col h-screen">
             <TopBar title="Tiffin Dashboard" />
             <div className="flex flex-1 overflow-hidden">
-            {/* <div>
-                <AdminTiffinService />
-            </div> */}
-              <TiffinLeftPanel
+                {/* <div> */}
+
+                {/* </div> */}
+                <TiffinLeftPanel
                     mealTypes={TiffinDummyData.mealTypes}
                     instructions={dummyinstructions.instructions}
                     onSelectMealType={setSelectedMealType}
                     onSelectInstruction={setSelectedInstruction}
                     onselectComponet={setselectedComponet}
                 />
-                <TiffinRightPanel
+                {/* <TiffinRightPanel
                     selectedMealType={selectedMealType}
                     SelectedInstruction={SelectedInstruction}
                     selectedComponet={selectedComponet}
                     instructions={dummyinstructions.instructions}
-                />
+                /> */}
+                <AdminTiffinService />
             </div>
         </div>
     );
