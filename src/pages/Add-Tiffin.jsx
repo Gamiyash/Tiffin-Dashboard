@@ -25,13 +25,13 @@ export default function AddTiffin() {
                     onSelectInstruction={setSelectedInstruction}
                     onselectComponet={setselectedComponet}
                 />
-                {/* <TiffinRightPanel
-                    selectedMealType={selectedMealType}
-                    SelectedInstruction={SelectedInstruction}
+                <TiffinRightPanel
+                    // selectedMealType={selectedMealType}
+                    // SelectedInstruction={SelectedInstruction}
                     selectedComponet={selectedComponet}
-                    instructions={dummyinstructions.instructions}
-                /> */}
-                <AdminTiffinService />
+                    // instructions={dummyinstructions.instructions}
+                />
+                {/* <AdminTiffinService /> */}
             </div>
         </div>
     );

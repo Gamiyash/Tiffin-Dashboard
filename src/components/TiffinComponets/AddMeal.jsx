@@ -1006,7 +1006,7 @@
 // export default AdminTiffinService;
 
 import React, { useState } from "react";
-import { FiEdit2, FiPlus, FiTrash2 } from "react-icons/fi";
+import { FiEdit, FiPlus, FiTrash2 } from "react-icons/fi";
 import { dummyData } from "../../data/TiffinDummyData";
 
 const AdminTiffinService = () => {
@@ -1068,18 +1068,18 @@ const AdminTiffinService = () => {
                             src="https://tiffinstash.com/cdn/shop/files/FoodEXPremiumVegTiffinService_dc8c57af-1b52-4e76-ac5e-4e87facb8c0b_1024x1024@2x.png?v=1708080733"
                             alt="Tiffin Service"
                         />
-                        <div className="flex flex-wrap items-center gap-2 mt-2">
+                        <div className="flex flex-wrap items-center gap-1 mt-1">
                             <img
-                                className="rounded-md w-14 h-14 object-cover"
+                                className="rounded-md w-16 h-16 object-cover"
                                 src="https://tiffinstash.com/cdn/shop/files/FoodEXPremiumVegTiffinService_dc8c57af-1b52-4e76-ac5e-4e87facb8c0b_1024x1024@2x.png?v=1708080733"
                                 alt="Tiffin 1"
                             />
                             <img
-                                className="rounded-md w-14 h-14 object-cover"
+                                className="rounded-md w-16 h-16 object-cover"
                                 src="https://tiffinstash.com/cdn/shop/files/FoodEXPremiumVegTiffinService_dc8c57af-1b52-4e76-ac5e-4e87facb8c0b_1024x1024@2x.png?v=1708080733"
                                 alt="Tiffin 2"
                             />
-                           
+
                         </div>
                     </div>
 
@@ -1101,9 +1101,9 @@ const AdminTiffinService = () => {
                                 </select>
                                 <button
                                     onClick={() => handleEdit(plans.find((p) => p.planId === selectedPlan), "plan")}
-                                    className="text-green-500"
+                                    className="text-blue-500"
                                 >
-                                    <FiEdit2 size={16} />
+                                    <FiEdit size={16} />
                                 </button>
                                 <button
                                     onClick={() => handleDelete(plans.find((p) => p.planId === selectedPlan), "plan")}
@@ -1132,9 +1132,9 @@ const AdminTiffinService = () => {
                                     onClick={() =>
                                         handleEdit(mealTypes.find((m) => m.mealTypeId === selectedMealType), "mealType")
                                     }
-                                    className="text-green-500"
+                                    className="text-blue-500"
                                 >
-                                    <FiEdit2 size={16} />
+                                    <FiEdit size={16} />
                                 </button>
                                 <button
                                     onClick={() =>
@@ -1172,14 +1172,15 @@ const AdminTiffinService = () => {
                                 Flexible Start/End Dates
                             </label>
                         </div>
+
                         <div>
                             {isFlexibleDates && (
-                                <p className="text-sm text-gray-500 mb-3">
+                                <p className="text-sm text-gray-500">
                                     Now users can set custom start and end dates for each order (e.g., Start: 7/Jan/2025, End: 10/Jan/2025).
                                 </p>
                             )}
                         </div>
-                        <div className="md:flex-row flex flex-col md:items-center gap-4 pt-3">
+                        <div className="md:flex-row flex flex-col md:items-center gap-4">
                             <button
                                 onClick={() => handleAdd("plan")}
                                 className="px-4 py-2 flex gap-2 items-center bg-red-500 text-white rounded text-sm font-semibold hover:bg-red-600 transition-colors"

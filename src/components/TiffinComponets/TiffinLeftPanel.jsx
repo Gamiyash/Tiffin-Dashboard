@@ -86,7 +86,7 @@ const TiffinLeftPanel = ({ mealTypes = [], instructions = [], onSelectMealType, 
             <section className="top-sec h-full">
                 <h1 className="text-xl font-semibold mb-4 text-gray-700">Tiffin Details</h1>
                 {/* Meal Types Dropdown */}
-                <div className="mb-2">
+                {/* <div className="mb-2">
                     <div
                         className="cursor-pointer py-2 px-3 bg-white rounded-md shadow-sm hover:bg-gray-100 transition-all duration-300 ease-in-out flex justify-between items-center"
                         onClick={() => handleCategoryClick("mealTypes")}
@@ -111,7 +111,7 @@ const TiffinLeftPanel = ({ mealTypes = [], instructions = [], onSelectMealType, 
                                         onClick={() => handleMealTypeChange(mealType)}
                                         key={mealType.mealTypeId}
                                         className="hover:bg-gray-100 rounded-md py-2 px-2 flex items-center gap-2">
-                                        {/* {idx + 1} */}
+                                        
                                         <button className="px-4 flex items-center gap-2">
                                             <span>{mealType.label}</span>
                                             {!validationStatus[mealType.mealTypeId] && (
@@ -122,10 +122,10 @@ const TiffinLeftPanel = ({ mealTypes = [], instructions = [], onSelectMealType, 
                             </motion.div>
                         )}
                     </AnimatePresence>
-                </div>
+                </div> */}
 
                 {/* Instructions Dropdown */}
-                <div className="mb-2">
+                {/* <div className="mb-2">
                     <div
                         className="cursor-pointer py-2 px-3 bg-white rounded-md shadow-sm hover:bg-gray-100 transition-all duration-300 ease-in-out flex justify-between items-center"
                         onClick={() => handleCategoryClick("instructions")}
@@ -150,7 +150,7 @@ const TiffinLeftPanel = ({ mealTypes = [], instructions = [], onSelectMealType, 
                                         onClick={() => handleInstructionChange(instruction)}
                                         key={idx}
                                         className="hover:bg-gray-100 rounded-md py-2 px-2 flex gap-2 items-center">
-                                        {/* {idx + 1} */}
+                                    
                                         <h4 className=" px-4">{instruction.title}</h4>
                                         {!validateInstructions[idx] && (
                                             <span className="w-2 h-2 bg-red-500 rounded-full"></span>
@@ -160,21 +160,49 @@ const TiffinLeftPanel = ({ mealTypes = [], instructions = [], onSelectMealType, 
                             </motion.div>
                         )}
                     </AnimatePresence>
-                </div>
-                <div onClick={() => handleSelectedComponet("View-Images")} className="">
+                </div> */}
+
+                <div onClick={() => handleSelectedComponet("Manage-Tiffin")} className="mb-2">
                     <div
                         className="cursor-pointer py-2 px-3 bg-white rounded-md shadow-sm hover:bg-gray-100 transition-all duration-300 ease-in-out flex justify-between items-center"
-                        onClick={() => handleCategoryClick("images")}
+                        onClick={() => handleCategoryClick("Manage-Tiffin")}
                     >
-                        <h2 className="font-semibold text-gray-700">Images (3)</h2>
+                        <h2 className="font-semibold text-gray-700">Manage-Tiffin</h2>
                         <FiChevronDown
-                            className={`text-gray-500 transition-transform duration-300 ${selectedCategory === "images" ? "rotate-[450deg]" : ""
+                            className={`text-gray-500 transition-transform duration-300 ${selectedCategory === "Manage-Tiffin" ? "rotate-[450deg]" : ""
                                 }`}
                         />
                     </div>
                 </div>
+
+                <div onClick={() => handleSelectedComponet("Instructions")} className="mb-2">
+                    <div
+                        className="cursor-pointer py-2 px-3 bg-white rounded-md shadow-sm hover:bg-gray-100 transition-all duration-300 ease-in-out flex justify-between items-center"
+                        onClick={() => handleCategoryClick("Instructions")}
+                    >
+                        <h2 className="font-semibold text-gray-700">Instructions</h2>
+                        <FiChevronDown
+                            className={`text-gray-500 transition-transform duration-300 ${selectedCategory === "Instructions" ? "rotate-[450deg]" : ""
+                                }`}
+                        />
+                    </div>
+                </div>
+
+                <div onClick={() => handleSelectedComponet("Comments")} className="mb-2">
+                    <div
+                        className="cursor-pointer py-2 px-3 bg-white rounded-md shadow-sm hover:bg-gray-100 transition-all duration-300 ease-in-out flex justify-between items-center"
+                        onClick={() => handleCategoryClick("Comments")}
+                    >
+                        <h2 className="font-semibold text-gray-700">Comments</h2>
+                        <FiChevronDown
+                            className={`text-gray-500 transition-transform duration-300 ${selectedCategory === "Comments" ? "rotate-[450deg]" : ""
+                                }`}
+                        />
+                    </div>
+                </div>
+
             </section>
-            <section className="bottom-sec">
+            {/* <section className="bottom-sec">
                 <div className="mt-4 pt-4 border-t border-gray-200">
                     <div className="flex flex-col w-full gap-2">
                         <button
@@ -200,18 +228,11 @@ const TiffinLeftPanel = ({ mealTypes = [], instructions = [], onSelectMealType, 
                             <BiImageAdd size={18} className="text-blue-500" />
                             <span className="text-gray-700 text-sm font-medium">Add Image</span>
                         </button>
-                        {/* 
-                        <button
-                            className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 transition-all"
-                        >
-                            <RiCalendarTodoLine size={17} className="text-blue-500" />
-                            <span className="text-gray-700 text-sm font-medium">Manage Tiffin</span>
-                        </button> */}
                     </div>
 
 
                 </div>
-            </section>
+            </section> */}
         </div>
     );
 };

@@ -1,20 +1,34 @@
 import React from 'react'
 import AddImages from './AddImages'
 import AddInstruction from './AddInstruction'
-import AddMeal from './AddMeal'
+import AdminTiffinService from './AddMeal'
 import ManageTiffinService_Images from './ManageTiffinService_Images'
+import ShowComments from './ShowComments'
 
 const RenderSelectedComponet = ({ selectedMealType, SelectedInstruction, SelectedComponet }) => {
-    if (SelectedComponet && !selectedMealType && !SelectedInstruction) {
+    // if (SelectedComponet && !selectedMealType && !SelectedInstruction) {
+    //     switch (SelectedComponet) {
+    //         case "Add-Meal":
+    //             return <AddMeal />;
+    //         case "Add-Image":
+    //             return <AddImages />;
+    //         case "Add-Instruction":
+    //             return <AddInstruction />;
+    //         case "View-Images":
+    //             return <ManageTiffinService_Images />
+    //         default:
+    //             return null; // Return nothing for unhandled cases
+    //     }
+    // }
+
+    if (SelectedComponet) {
         switch (SelectedComponet) {
-            case "Add-Meal":
-                return <AddMeal />;
-            case "Add-Image":
-                return <AddImages />;
-            case "Add-Instruction":
+            case "Manage-Tiffin":
+                return <AdminTiffinService />;
+            case "Comments":
+                return <ShowComments />;
+            case "Instructions":
                 return <AddInstruction />;
-            case "View-Images":
-                return <ManageTiffinService_Images />
             default:
                 return null; // Return nothing for unhandled cases
         }
@@ -22,7 +36,7 @@ const RenderSelectedComponet = ({ selectedMealType, SelectedInstruction, Selecte
 
     return (
         <div className='w-full'>
-            {SelectedComponet && !selectedMealType && !SelectedInstruction && (
+            {SelectedComponet && (
                 < div >
                     {SelectedComponet}
                 </div>

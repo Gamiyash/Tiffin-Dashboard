@@ -4,10 +4,10 @@ import ShowInstruction from "./ShowInstruction";
 import RenderSelectedComponet from "../RenderSelectedComponet";
 import ManageService from "./ManageService";
 
-const TiffinRightPanel = ({ selectedMealType, SelectedInstruction, selectedComponet }) => {
+const TiffinRightPanel = ({ selectedComponet }) => {
     return (
         <div className="w-full bg-white p-4 overflow-y-auto custom-scrollbar">
-            <ShowMealTypeDetails
+            {/* <ShowMealTypeDetails
                 selectedMealType={selectedMealType}
                 SelectedInstruction={SelectedInstruction}
                 SelectedComponet={selectedComponet}
@@ -16,10 +16,10 @@ const TiffinRightPanel = ({ selectedMealType, SelectedInstruction, selectedCompo
                 selectedMealType={selectedMealType}
                 SelectedInstruction={SelectedInstruction}
                 SelectedComponet={selectedComponet}
-            />
+            /> */}
             <RenderSelectedComponet
-                selectedMealType={selectedMealType}
-                SelectedInstruction={SelectedInstruction}
+                // selectedMealType={selectedMealType}
+                // SelectedInstruction={SelectedInstruction}
                 SelectedComponet={selectedComponet}
             />
             {/* <ManageService /> */}
