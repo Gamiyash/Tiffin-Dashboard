@@ -367,6 +367,7 @@ import { FiEdit, FiPlus, FiTrash2 } from "react-icons/fi";
 import { dummyData } from "../../../../data/TiffinDummyData";
 import MealPlanPopup from "./MealPlanPopup";
 import MealTypePopup from "./MealTypePopup";
+import { HiOutlineInformationCircle } from "react-icons/hi";
 
 const ManageTiffin = () => {
     const [plans, setPlans] = useState([]);
@@ -471,28 +472,28 @@ const ManageTiffin = () => {
 
     const handleDelete = async (item, type) => {
         const confirmDelete = window.confirm(
-          `Are you sure you want to delete this ${type === "plan" ? "meal plan" : "meal type"}?`
+            `Are you sure you want to delete this ${type === "plan" ? "meal plan" : "meal type"}?`
         );
-      
+
         if (!confirmDelete) return;
-      
+
         try {
-          if (type === "plan") {
-            // Call the delete plan route
-            await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/delete-plan/${item._id}`);
-            setPlans(plans.filter(plan => plan._id !== item._id));
-          } else if (type === "mealType") {
-            // Call the delete meal type route
-            await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/delete-meal-type/${item.mealTypeId}`);
-            setMealTypes(mealTypes.filter(mealType => mealType.mealTypeId !== item.mealTypeId));
-          }
-          alert(`${type === "plan" ? "Meal plan" : "Meal type"} deleted successfully.`);
+            if (type === "plan") {
+                // Call the delete plan route
+                await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/delete-plan/${item._id}`);
+                setPlans(plans.filter(plan => plan._id !== item._id));
+            } else if (type === "mealType") {
+                // Call the delete meal type route
+                await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/delete-meal-type/${item.mealTypeId}`);
+                setMealTypes(mealTypes.filter(mealType => mealType.mealTypeId !== item.mealTypeId));
+            }
+            alert(`${type === "plan" ? "Meal plan" : "Meal type"} deleted successfully.`);
         } catch (error) {
-          console.error(`Error deleting ${type}:`, error);
-          alert(`Failed to delete ${type === "plan" ? "meal plan" : "meal type"}.`);
+            console.error(`Error deleting ${type}:`, error);
+            alert(`Failed to delete ${type === "plan" ? "meal plan" : "meal type"}.`);
         }
-      };
-      
+    };
+
 
     const refreshData = async () => {
         try {
@@ -572,7 +573,7 @@ const ManageTiffin = () => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Meal Type</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Meal Details</label>
                             <div className="flex items-center gap-2">
                                 {mealTypes.length === 0 ?
                                     (<p className="w-full border p-2 text-sm rounded-md">Add Meal Type</p>) :
@@ -654,7 +655,19 @@ const ManageTiffin = () => {
                                                 }`}
                                         ></span>
                                     </div>
-                                    <label className="font-medium text-gray-700">Flexible Start/End Dates</label>
+                                    <label className="font-medium text-gray-700">Flexible Order Dates</label>
+                                    <div className="relative group">
+                                        <HiOutlineInformationCircle
+                                            size={18}
+                                            className="text-gray-600 cursor-pointer hover:text-gray-800"
+                                        />
+                                        <div
+                                            className="absolute w-[25vw] mt-4 top-full -left-32 hidden group-hover:flex items-center justify-center bg-gray-700 text-white text-xs rounded-md px-2 py-1 shadow-md"
+                                        >
+                                            <span>Enable Flexible Order Dates for orders (e.g., 7–10 Jan 2025). Users can also select specific dates like 2 Jan, 5 Jan, or 10 Jan</span>
+                                            {/* <span>Enable flexible start and end dates for orders (e.g., Start: 7/Jan/2025, End: 10/Jan/2025). Users can also select specific flexible dates for orders, such as 2/Jan, 5/Jan, and 10/Jan.</span> */}
+                                        </div>
+                                    </div>
                                 </div>
                                 {/* Save Button */}
                                 <div className="pr-2">
@@ -666,12 +679,6 @@ const ManageTiffin = () => {
                                     </button>
                                 </div>
                             </div>
-
-                            {isFlexibleDates && (
-                                <p className="text-sm text-gray-500">
-                                    Now users can set custom start and end dates for each order (e.g., Start: 7/Jan/2025, End: 10/Jan/2025).
-                                </p>
-                            )}
                         </div>
                     </div>
                 </div>
@@ -698,7 +705,7 @@ const ManageTiffin = () => {
                 )
             }
             <div className="Menu bg-white border-t-2 pt-2">
-                <h2 className="text-lg pb-2 font-medium">Meal Types</h2>
+                <h2 className="text-lg pb-2 font-medium">Meal Details</h2>
                 <div className="space-y-1">
                     {mealTypes.map((type) => (
                         // View Mode

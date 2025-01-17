@@ -1,9 +1,18 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+const predefinedPlans = [
+  "Trial (1Day)",
+  "Week",
+  "1 Month",
+  "15 Days",
+];
+
 const MealPlanPopup = ({ editingItem, setEditingItem, closePopup, refreshData }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [filteredSuggestions, setFilteredSuggestions] = useState(predefinedPlans);
 
   const handleSave = async () => {
     if (!editingItem.label?.trim()) {
@@ -38,6 +47,35 @@ const MealPlanPopup = ({ editingItem, setEditingItem, closePopup, refreshData })
     }
   };
 
+  const handleInputChange = (e) => {
+    const inputValue = e.target.value;
+    setEditingItem({ ...editingItem, label: inputValue });
+
+    // Filter predefined suggestions based on input
+    const filtered = predefinedPlans.filter((plan) =>
+      plan.toLowerCase().includes(inputValue.toLowerCase())
+    );
+    setFilteredSuggestions(filtered);
+
+    // Show dropdown only if input is not empty
+    setShowSuggestions(inputValue.trim() !== "");
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    setEditingItem({ ...editingItem, label: suggestion });
+    setShowSuggestions(false);
+  };
+
+  const addNewSuggestion = () => {
+    if (
+      editingItem.label.trim() &&
+      !predefinedPlans.includes(editingItem.label.trim())
+    ) {
+      predefinedPlans.push(editingItem.label.trim());
+    }
+    setShowSuggestions(false);
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 backdrop-blur-sm">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-[90vw] md:w-[40vw] max-h-[90vh] overflow-hidden">
@@ -46,7 +84,7 @@ const MealPlanPopup = ({ editingItem, setEditingItem, closePopup, refreshData })
             {editingItem._id ? "Edit Meal Plan" : "Add New Meal Plan"}
           </h3>
 
-          <div className="space-y-4">
+          {/* <div className="space-y-4">
             <div>
               <label
                 htmlFor="label"
@@ -62,6 +100,48 @@ const MealPlanPopup = ({ editingItem, setEditingItem, closePopup, refreshData })
                 className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                 placeholder="Enter plan name"
               />
+            </div> */}
+          <div className="space-y-4">
+            <div>
+              <label
+                htmlFor="label"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              >
+                Plan Label
+              </label>
+              <input
+                id="label"
+                type="text"
+                value={editingItem.label || ""}
+                onChange={handleInputChange}
+                onFocus={() => setShowSuggestions(true)}
+                className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                placeholder="Enter or select a plan name"
+              />
+
+              {/* Suggestions Dropdown */}
+              {showSuggestions && (
+                <ul className="mt-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 max-h-40 overflow-y-auto">
+                  {filteredSuggestions.map((suggestion, index) => (
+                    <li
+                      key={index}
+                      onClick={() => handleSuggestionClick(suggestion)}
+                      className="px-4 py-2 cursor-pointer hover:bg-blue-500 hover:text-white dark:hover:bg-blue-600"
+                    >
+                      {suggestion}
+                    </li>
+                  ))}
+                  {/* Add new suggestion */}
+                  {editingItem.label.trim() && !filteredSuggestions.includes(editingItem.label) && (
+                    <li
+                      onClick={addNewSuggestion}
+                      className="px-4 py-2 cursor-pointer text-blue-600 hover:underline"
+                    >
+                      Add "{editingItem.label}"
+                    </li>
+                  )}
+                </ul>
+              )}
             </div>
 
             {error && (

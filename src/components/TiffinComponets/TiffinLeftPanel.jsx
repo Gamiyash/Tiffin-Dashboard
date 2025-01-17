@@ -49,10 +49,10 @@ const TiffinLeftPanel = ({ mealTypes = [], instructions = [], onSelectMealType, 
     const handleSelectedComponet = (componet) => {
         setselectedComponet(componet)
         onselectComponet(componet)
-        setSelectedMealType(null);
-        setselectedInstruction(null);
-        onSelectInstruction(null);
-        onSelectMealType(null);
+        // setSelectedMealType(null);
+        // setselectedInstruction(null);
+        // onSelectInstruction(null);
+        // onSelectMealType(null);
         console.log("Selected Componet is:", selectedComponet);
     }
 
@@ -60,26 +60,26 @@ const TiffinLeftPanel = ({ mealTypes = [], instructions = [], onSelectMealType, 
         setSelectedCategory((prev) => (prev === category ? null : category));
     };
 
-    const handleMealTypeChange = (mealType) => {
-        const newSelection = mealType;
-        setSelectedMealType(newSelection);
-        onSelectMealType(newSelection);
-        setselectedInstruction(null);
-        onSelectInstruction(null);
-        setselectedComponet(null);
-        onselectComponet(null);
+    // const handleMealTypeChange = (mealType) => {
+    //     const newSelection = mealType;
+    //     setSelectedMealType(newSelection);
+    //     onSelectMealType(newSelection);
+    //     setselectedInstruction(null);
+    //     onSelectInstruction(null);
+    //     setselectedComponet(null);
+    //     onselectComponet(null);
 
-    }
+    // }
 
-    const handleInstructionChange = (instruction) => {
-        const newSelection = instruction;
-        setselectedInstruction(newSelection);
-        onSelectInstruction(newSelection);
-        setSelectedMealType(null);
-        onSelectMealType(null);
-        setselectedComponet(null);
-        onselectComponet(null);
-    }
+    // const handleInstructionChange = (instruction) => {
+    //     const newSelection = instruction;
+    //     setselectedInstruction(newSelection);
+    //     onSelectInstruction(newSelection);
+    //     setSelectedMealType(null);
+    //     onSelectMealType(null);
+    //     setselectedComponet(null);
+    //     onselectComponet(null);
+    // }
 
     return (
         <div className="w-1/3 bg-gray-50 border-r border-gray-200 p-4 flex flex-col h-full overflow-y-auto custom-scrollbar">

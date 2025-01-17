@@ -110,7 +110,7 @@ export default function Sidebar() {
           </li>
           <li>{navItem("/offers", HiOutlineGift, "Offers")}</li>
           <li>
-            {navItem("/outlet-settings", HiOutlineCog, "Outlet settings")}
+            {navItem("/Tiffin-settings", HiOutlineCog, "Tiffin settings")}
           </li>
           <li>
             {navItem("/outlet-info", HiOutlineInformationCircle, "Outlet info")}

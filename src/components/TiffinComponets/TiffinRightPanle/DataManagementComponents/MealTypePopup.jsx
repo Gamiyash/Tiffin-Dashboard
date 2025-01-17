@@ -281,19 +281,19 @@ const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData })
     if (editingItem) {
       console.log("editing item plans (array):", editingItem.specificPlans);
       console.log("Plans (object array):", Plans);
-  
+
       // Get all plan labels from Plans objects
       const allPlanLabels = Plans.map(plan => plan.label);
-      
+
       // Check if specificPlans array contains all plan labels
-      const hasAllPlans = editingItem.specificPlans && 
+      const hasAllPlans = editingItem.specificPlans &&
         Array.isArray(editingItem.specificPlans) &&
         editingItem.specificPlans.length === allPlanLabels.length &&
         editingItem.specificPlans.every(plan => allPlanLabels.includes(plan));
-  
+
       // Set applyTo to "all" if all plans are selected, otherwise "specific"
       setApplyTo(hasAllPlans ? "all" : "specific");
-  
+
       // Set selectedPlans from the specificPlans array
       setSelectedPlans(editingItem.specificPlans || []);
     }
@@ -403,12 +403,12 @@ const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData })
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 backdrop-blur-sm">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-[90vw] md:w-[40vw] max-h-[90vh] overflow-auto">
-        <div className="p-6 space-y-6">
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <div className="pl-6 pt-4 space-y-2">
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white">
             {editingItem.mealTypeId ? "Edit Meal Type" : "Add New Meal Type"}
           </h3>
 
-          <div className="space-y-4">
+          <div className="space-y-2">
             {/* <div>
               <label htmlFor="label" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Label
@@ -475,7 +475,7 @@ const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData })
             </div>
 
 
-            <div>
+            {/* <div >
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Price for each plan</label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {Plans.map((plan) => (
@@ -493,7 +493,49 @@ const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData })
                   </div>
                 ))}
               </div>
+            </div> */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Price for each plan (Select specific plans)
+              </label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                {Plans.map((plan) => (
+                  <div key={plan._id} className="flex flex-col items-start space-y-1">
+                    {/* Plan label */}
+                    <div className="flex items-center space-x-2">
+                      {/* <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{plan.label}</span> */}
+                      {/* Checkbox to select plan */}
+                      {applyTo === "specific" && (
+                        <label className="flex items-center">
+                          <input
+                            type="checkbox"
+                            value={plan.label}
+                            checked={selectedPlans.includes(plan.label)}
+                            onChange={() => handleCheckboxChange(plan)}
+                            className="mr-2 rounded text-blue-600 focus:ring-blue-500 dark:bg-gray-700"
+                          />
+                          {/* <span className="text-sm text-gray-700 dark:text-gray-300">Include</span> */}
+                        </label>
+
+                      )}
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300 ">{plan.label}</span>
+                    </div>
+                    {/* Price input field */}
+                    <input
+                      type="number"
+                      value={editingItem.prices[plan._id] || ""}
+                      onChange={(e) => {
+                        const updatedPrices = { ...editingItem.prices, [plan._id]: e.target.value };
+                        setEditingItem({ ...editingItem, prices: updatedPrices });
+                      }}
+                      placeholder={`Price for ${plan.label}`}
+                      className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
+
             <div className="">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -525,7 +567,7 @@ const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData })
                 </div>
               </div>
 
-              {applyTo === "specific" && (
+              {/* {applyTo === "specific" && (
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                     Select Plans
@@ -545,7 +587,7 @@ const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData })
                     ))}
                   </div>
                 </div>
-              )}
+              )} */}
               {error && (
                 <div className="text-red-500 text-sm">
                   {error}
