@@ -469,13 +469,30 @@ const ManageTiffin = () => {
         }
     };
 
-    const handleDelete = (item, type) => {
-        if (type === "plan") {
-            setPlans(plans.filter((p) => p._id !== item._id));
-        } else if (type === "mealType") {
-            setMealTypes(mealTypes.filter((m) => m.mealTypeId !== item.mealTypeId));
+    const handleDelete = async (item, type) => {
+        const confirmDelete = window.confirm(
+          `Are you sure you want to delete this ${type === "plan" ? "meal plan" : "meal type"}?`
+        );
+      
+        if (!confirmDelete) return;
+      
+        try {
+          if (type === "plan") {
+            // Call the delete plan route
+            await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/delete-plan/${item._id}`);
+            setPlans(plans.filter(plan => plan._id !== item._id));
+          } else if (type === "mealType") {
+            // Call the delete meal type route
+            await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/delete-meal-type/${item.mealTypeId}`);
+            setMealTypes(mealTypes.filter(mealType => mealType.mealTypeId !== item.mealTypeId));
+          }
+          alert(`${type === "plan" ? "Meal plan" : "Meal type"} deleted successfully.`);
+        } catch (error) {
+          console.error(`Error deleting ${type}:`, error);
+          alert(`Failed to delete ${type === "plan" ? "meal plan" : "meal type"}.`);
         }
-    };
+      };
+      
 
     const refreshData = async () => {
         try {
