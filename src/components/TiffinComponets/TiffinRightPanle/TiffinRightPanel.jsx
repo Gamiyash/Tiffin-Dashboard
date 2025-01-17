@@ -1,8 +1,6 @@
 import React from "react";
-import ShowMealTypeDetails from "./ShowMealTypeDetails";
-import ShowInstruction from "./ShowInstruction";
 import RenderSelectedComponet from "../RenderSelectedComponet";
-import ManageService from "./ManageService";
+
 
 const TiffinRightPanel = ({ selectedComponet }) => {
     return (

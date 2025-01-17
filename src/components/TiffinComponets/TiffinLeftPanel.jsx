@@ -168,10 +168,10 @@ const TiffinLeftPanel = ({ mealTypes = [], instructions = [], onSelectMealType, 
                         onClick={() => handleCategoryClick("Manage-Tiffin")}
                     >
                         <h2 className="font-semibold text-gray-700">Manage-Tiffin</h2>
-                        <FiChevronDown
+                        {/* <FiChevronDown
                             className={`text-gray-500 transition-transform duration-300 ${selectedCategory === "Manage-Tiffin" ? "rotate-[450deg]" : ""
                                 }`}
-                        />
+                        /> */}
                     </div>
                 </div>
 
@@ -181,10 +181,10 @@ const TiffinLeftPanel = ({ mealTypes = [], instructions = [], onSelectMealType, 
                         onClick={() => handleCategoryClick("Instructions")}
                     >
                         <h2 className="font-semibold text-gray-700">Instructions</h2>
-                        <FiChevronDown
+                        {/* <FiChevronDown
                             className={`text-gray-500 transition-transform duration-300 ${selectedCategory === "Instructions" ? "rotate-[450deg]" : ""
                                 }`}
-                        />
+                        /> */}
                     </div>
                 </div>
 
@@ -194,10 +194,10 @@ const TiffinLeftPanel = ({ mealTypes = [], instructions = [], onSelectMealType, 
                         onClick={() => handleCategoryClick("Comments")}
                     >
                         <h2 className="font-semibold text-gray-700">Comments</h2>
-                        <FiChevronDown
+                        {/* <FiChevronDown
                             className={`text-gray-500 transition-transform duration-300 ${selectedCategory === "Comments" ? "rotate-[450deg]" : ""
                                 }`}
-                        />
+                        /> */}
                     </div>
                 </div>
 

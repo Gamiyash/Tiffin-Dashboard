@@ -1,9 +1,7 @@
 import React from 'react'
-import AddImages from './AddImages'
-import AddInstruction from './AddInstruction'
-import AdminTiffinService from './AddMeal'
-import ManageTiffinService_Images from './ManageTiffinService_Images'
-import ShowComments from './ShowComments'
+import AddInstruction from './TiffinRightPanle/DataManagementComponents/AddInstruction'
+import ManageTiffin from './TiffinRightPanle/DataManagementComponents/ManageTiffin'
+import ShowComments from './TiffinRightPanle/DataManagementComponents/ShowComments'
 
 const RenderSelectedComponet = ({ selectedMealType, SelectedInstruction, SelectedComponet }) => {
     // if (SelectedComponet && !selectedMealType && !SelectedInstruction) {
@@ -24,13 +22,13 @@ const RenderSelectedComponet = ({ selectedMealType, SelectedInstruction, Selecte
     if (SelectedComponet) {
         switch (SelectedComponet) {
             case "Manage-Tiffin":
-                return <AdminTiffinService />;
+                return <ManageTiffin />;
             case "Comments":
                 return <ShowComments />;
             case "Instructions":
                 return <AddInstruction />;
             default:
-                return null; // Return nothing for unhandled cases
+                return <ManageTiffin/>; // Return nothing for unhandled cases
         }
     }
 

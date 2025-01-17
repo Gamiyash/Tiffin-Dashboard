@@ -212,32 +212,32 @@ export const dummyData = {
   ]
 };
 
-export const dummyInstructions = {
-  instructions: [
-    {
-      title: "Order Cut-off Time",
-      details: "Place orders before 9:00 PM on the previous day."
-    },
-    {
-      title: "Flexi Plans",
-      details: "For changes in current orders, skipping a delivery, pausing a plan, or canceling a plan, inform us before the cut-off time."
-    },
-    {
-      title: "Delivery Timings",
-      details: "Delivery may be affected by ±45 minutes due to traffic, road closures, or weather conditions."
-    },
-    {
-      title: "Extra Items",
-      details: "Extra items can only be ordered with a meal plan and from the same seller."
-    },
-    {
-      title: "Refund Policy",
-      details: "A cancellation fee of $5 applies to trial orders and $10 applies to all other orders."
-    },
-    {
-      title: "Delivery Time",
-      details: "9:00 AM to 3:00 PM"
-    }
-  ]
-};
+// export const dummyInstructions = {
+//   instructions: [
+//     {
+//       title: "Order Cut-off Time",
+//       details: "Place orders before 9:00 PM on the previous day."
+//     },
+//     {
+//       title: "Flexi Plans",
+//       details: "For changes in current orders, skipping a delivery, pausing a plan, or canceling a plan, inform us before the cut-off time."
+//     },
+//     {
+//       title: "Delivery Timings",
+//       details: "Delivery may be affected by ±45 minutes due to traffic, road closures, or weather conditions."
+//     },
+//     {
+//       title: "Extra Items",
+//       details: "Extra items can only be ordered with a meal plan and from the same seller."
+//     },
+//     {
+//       title: "Refund Policy",
+//       details: "A cancellation fee of $5 applies to trial orders and $10 applies to all other orders."
+//     },
+//     {
+//       title: "Delivery Time",
+//       details: "9:00 AM to 3:00 PM"
+//     }
+//   ]
+// };
 

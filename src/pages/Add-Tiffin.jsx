@@ -4,20 +4,16 @@ import TiffinRightPanel from "../components/TiffinComponets/TiffinRightPanle/Tif
 import TopBar from "../components/TopBar";
 import TiffinDummyData from "../data/TiffinDummyData";
 import { dummyinstructions } from "../data/TiffinDummyData";
-import AdminTiffinService from "../components/TiffinComponets/AddMeal";
 
 export default function AddTiffin() {
     const [selectedMealType, setSelectedMealType] = useState(null);
     const [SelectedInstruction, setSelectedInstruction] = useState(null);
-    const [selectedComponet, setselectedComponet] = useState(null)
+    const [selectedComponet, setselectedComponet] = useState("Manage-Tiffin")
 
     return (
         <div className="flex flex-col h-screen">
             <TopBar title="Tiffin Dashboard" />
             <div className="flex flex-1 overflow-hidden">
-                {/* <div> */}
-
-                {/* </div> */}
                 <TiffinLeftPanel
                     mealTypes={TiffinDummyData.mealTypes}
                     instructions={dummyinstructions.instructions}
@@ -31,7 +27,6 @@ export default function AddTiffin() {
                     selectedComponet={selectedComponet}
                     // instructions={dummyinstructions.instructions}
                 />
-                {/* <AdminTiffinService /> */}
             </div>
         </div>
     );
