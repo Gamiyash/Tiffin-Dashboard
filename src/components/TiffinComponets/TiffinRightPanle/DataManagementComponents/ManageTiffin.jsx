@@ -363,7 +363,7 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FiEdit, FiPlus, FiTrash2 } from "react-icons/fi";
+import { FiEdit, FiPlus, FiTrash2, FiAlertCircle } from "react-icons/fi";
 import { dummyData } from "../../../../data/TiffinDummyData";
 import MealPlanPopup from "./MealPlanPopup";
 import MealTypePopup from "./MealTypePopup";
@@ -506,6 +506,13 @@ const ManageTiffin = () => {
         }
     };
 
+    const checkMissingPrices = (type) => {
+        // Check if any plan associated with the meal type has a missing price
+        return plans.some((plan) => !type.prices || !type.prices[plan._id]);
+    };
+
+
+
     return (
         <div className="font-inter h-full overflow-auto w-full mx-auto">
             <div className="bg-white w-full mx-auto mb-4">
@@ -582,13 +589,15 @@ const ManageTiffin = () => {
                                         onChange={(e) => setSelectedMealType(e.target.value)}
                                         className="p-2 w-full border border-gray-300 rounded text-sm cursor-pointer"
                                     >
-                                        {mealTypes.map((mealType) => (
-                                            <option key={mealType.mealTypeId} value={mealType.mealTypeId}>
-                                                {mealType.label}
-                                            </option>
-                                        ))}
-                                    </select>)}
+                                        {mealTypes.map((mealType) => {
+                                            return (
+                                                <option key={mealType.mealTypeId} value={mealType.mealTypeId}>
+                                                    {mealType.label}
+                                                </option>
 
+                                            )
+                                        })}
+                                    </select>)}
                                 <button
                                     onClick={() => handleAdd("mealType")}
                                     className="flex gap-1 items-center rounded text-sm font-semibold"
@@ -614,17 +623,6 @@ const ManageTiffin = () => {
                             </div>
                         </div>
 
-
-                        {/* <div className="mb-6 flex flex-col gap-1 relative">
-                            <label className="block text-sm font-medium text-gray-700">Set Your Meal Days</label>
-                            <input
-                                type="text"
-                                value={serviceDays}
-                                onChange={(e) => setServiceDays(e.target.value)}
-                                placeholder="e.g., Mon-Fri"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none"
-                            />
-                        </div> */}
                         <div className="border border-gray-300 rounded-md p-3 flex flex-col gap-2 mr-2">
                             <label htmlFor="" className="font-medium text-gray-700 text-sm">Meal Days</label>
                             <div className="grid grid-cols-2 sm:grid-cols-3 gap-1">
@@ -687,7 +685,7 @@ const ManageTiffin = () => {
                 isEditing && editingItem.type === "mealType" && (
                     <MealTypePopup
                         editingItem={editingItem}
-                        // Plans={plans}
+                        mealTypes={mealTypes}
                         setEditingItem={setEditingItem}
                         closePopup={() => setIsEditing(false)}
                         refreshData={refreshData}
@@ -701,35 +699,41 @@ const ManageTiffin = () => {
                         setEditingItem={setEditingItem}
                         closePopup={() => setIsEditing(false)}
                         refreshData={refreshData}
+                        plans={plans}
                     />
                 )
             }
             <div className="Menu bg-white border-t-2 pt-2">
                 <h2 className="text-lg pb-2 font-medium">Meal Details</h2>
                 <div className="space-y-1">
-                    {mealTypes.map((type) => (
-                        // View Mode
-                        <div className="flex items-center justify-between gap-2 w-full bg-white shadow-sm border hover:shadow-md p-2 rounded-md">
-                            <div>
-                                <span className="font-medium">{type.label}:</span>
-                                <span className="text-sm ml-2">{type.description}</span>
+                    {mealTypes.map((type) => {
+                        const hasMissingPrices = checkMissingPrices(type);
+                        return (
+                            <div className="flex items-center justify-between gap-2 w-full bg-white shadow-sm border hover:shadow-md p-2 rounded-md">
+                                <div className="flex gap-1 items-center">
+                                    <span className="font-medium">{type.label}:</span>
+                                    <span className="text-sm">{type.description}</span>
+                                    {hasMissingPrices && (
+                                        <span className="bg-red-500 w-2 h-2 rounded-full mt-2"></span>
+                                    )}
+                                </div>
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={() => handleEditMenu(type, "mealType")}
+                                        className="text-blue-500 hover:text-blue-700"
+                                    >
+                                        <FiEdit size={16} />
+                                    </button>
+                                    <button
+                                        onClick={() => handleDelete(type, "mealType")}
+                                        className="text-red-500 hover:text-red-700"
+                                    >
+                                        <FiTrash2 size={16} />
+                                    </button>
+                                </div>
                             </div>
-                            <div className="flex gap-2">
-                                <button
-                                    onClick={() => handleEditMenu(type, "mealType")}
-                                    className="text-blue-500 hover:text-blue-700"
-                                >
-                                    <FiEdit size={16} />
-                                </button>
-                                <button
-                                    onClick={() => handleDelete(type, "mealType")}
-                                    className="text-red-500 hover:text-red-700"
-                                >
-                                    <FiTrash2 size={16} />
-                                </button>
-                            </div>
-                        </div>
-                    ))}
+                        )
+                    })}
                 </div>
 
             </div>

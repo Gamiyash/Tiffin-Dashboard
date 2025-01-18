@@ -1,248 +1,5 @@
-// // import React from "react";
-
-// // const MealTypePopup = ({ editingItem, plans, setEditingItem, handleSave, closePopup }) => {
-// //   return (
-// //     <div className="fixed inset-0 flex items-center justify-center my-auto bg-gray-800 bg-opacity-50 pt-20">
-// //       <div className="bg-white p-6 rounded shadow w-[70vw] md:w-[40vw] max-h-[80vh] overflow-auto">
-// //         <h3 className="text-lg font-semibold mb-4">Meal Type</h3>
-// //         <div className="mb-4">
-// //           <label className="block text-sm font-medium text-gray-700 mb-1">Label</label>
-// //           <input
-// //             type="text"
-// //             value={editingItem.label}
-// //             onChange={(e) => setEditingItem({ ...editingItem, label: e.target.value })}
-// //             className="w-full p-2 border border-gray-300 rounded"
-// //           />
-// //         </div>
-// //         <div className="mb-4">
-// //           <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-// //           <textarea
-// //             value={editingItem.description}
-// //             onChange={(e) => setEditingItem({ ...editingItem, description: e.target.value })}
-// //             className="w-full p-2 border border-gray-300 rounded"
-// //           ></textarea>
-// //         </div>
-// //         <div className="mb-4">
-// //           <label className="block text-sm font-medium text-gray-700 mb-1">Price for each plan</label>
-// //           <div className="grid grid-cols-2 gap-2">
-// //             {plans.map((plan) => (
-// //               <div key={plan._id} className="flex items-center gap-2 mb-3">
-// //                 <span className="text-sm w-fit">{plan.label}</span>
-// //                 <input
-// //                   type="number"
-// //                   value={editingItem.prices[plan._id]}
-// //                   onChange={(e) => {
-// //                     const updatedPrices = { ...editingItem.prices, [plan._id]: e.target.value };
-// //                     setEditingItem({ ...editingItem, prices: updatedPrices });
-// //                   }}
-// //                   className="w-full p-2 border border-gray-300 rounded"
-// //                 />
-// //               </div>
-// //             ))}
-// //           </div>
-// //         </div>
-// //         <div className="flex gap-4">
-// //           <button onClick={handleSave} className="px-4 py-2 bg-blue-500 text-white rounded">Save</button>
-// //           <button onClick={closePopup} className="px-4 py-2 bg-gray-300 text-gray-700 rounded">Cancel</button>
-// //         </div>
-// //       </div>
-// //     </div>
-// //   );
-// // };
-
-// // export default MealTypePopup;
-
-// // import React from "react";
-
-// // const MealTypePopup = ({ editingItem, plans, setEditingItem, handleSave, closePopup }) => {
-// //   return (
-// //     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 backdrop-blur-sm">
-// //       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-[90vw] md:w-[40vw]  max-h-[90vh] overflow-auto">
-// //         <div className="p-6 space-y-6">
-// //           <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Meal Type</h3>
-// //           <div className="space-y-4">
-// //             <div>
-// //               <label htmlFor="label" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Label</label>
-// //               <input
-// //                 id="label"
-// //                 type="text"
-// //                 value={editingItem.label}
-// //                 onChange={(e) => setEditingItem({ ...editingItem, label: e.target.value })}
-// //                 className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-// //               />
-// //             </div>
-// //             <div>
-// //               <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
-// //               <textarea
-// //                 id="description"
-// //                 value={editingItem.description}
-// //                 onChange={(e) => setEditingItem({ ...editingItem, description: e.target.value })}
-// //                 className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white h-24 resize-none"
-// //               ></textarea>
-// //             </div>
-// //             <div>
-// //               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Price for each plan</label>
-// //               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-// //                 {plans.map((plan) => (
-// //                   <div key={plan._id} className="flex items-center space-x-3">
-// //                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300 w-1/3">{plan.label}</span>
-// //                     <input
-// //                       type="number"
-// //                       value={editingItem.prices[plan._id]}
-// //                       onChange={(e) => {
-// //                         const updatedPrices = { ...editingItem.prices, [plan._id]: e.target.value };
-// //                         setEditingItem({ ...editingItem, prices: updatedPrices });
-// //                       }}
-// //                       className="w-2/3 p-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-// //                     />
-// //                   </div>
-// //                 ))}
-// //               </div>
-// //             </div>
-// //           </div>
-// //         </div>
-// //         <div className="bg-gray-50 dark:bg-gray-700 px-6 py-4 flex justify-end space-x-4">
-// //           <button
-// //             onClick={closePopup}
-// //             className="px-4 py-2 bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400"
-// //           >
-// //             Cancel
-// //           </button>
-// //           <button
-// //             onClick={handleSave}
-// //             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-// //           >
-// //             Save
-// //           </button>
-// //         </div>
-// //       </div>
-// //     </div>
-// //   );
-// // };
-
-// // export default MealTypePopup;
-
-// import React, { useState } from "react";
-
-// const MealTypePopup = ({ editingItem, plans, setEditingItem, handleSave, closePopup }) => {
-//   const [applyTo, setApplyTo] = useState("all"); // 'all' or 'specific'
-//   const [selectedPlans, setSelectedPlans] = useState([]);
-
-//   const handleCheckboxChange = (_id) => {
-//     if (selectedPlans.includes(_id)) {
-//       setSelectedPlans(selectedPlans.filter((id) => id !== _id));
-//     } else {
-//       setSelectedPlans([...selectedPlans, _id]);
-//     }
-//   };
-
-//   return (
-//     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 backdrop-blur-sm">
-//       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-[90vw] md:w-[40vw] max-h-[90vh] overflow-auto">
-//         <div className="p-6 space-y-6">
-//           <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Meal Type</h3>
-//           <div className="space-y-4">
-//             <div>
-//               <label htmlFor="label" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-//                 Label
-//               </label>
-//               <input
-//                 id="label"
-//                 type="text"
-//                 value={editingItem.label}
-//                 onChange={(e) => setEditingItem({ ...editingItem, label: e.target.value })}
-//                 className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-//               />
-//             </div>
-//             <div>
-//               <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-//                 Description
-//               </label>
-//               <textarea
-//                 id="description"
-//                 value={editingItem.description}
-//                 onChange={(e) => setEditingItem({ ...editingItem, description: e.target.value })}
-//                 className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white h-24 resize-none"
-//               ></textarea>
-//             </div>
-//             <div>
-//               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Select Meal Plan</label>
-//               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-//                 <label className="flex items-center">
-//                   <input
-//                     type="radio"
-//                     name="applyTo"
-//                     value="all"
-//                     checked={applyTo === "all"}
-//                     onChange={() => {
-//                       setApplyTo("all");
-//                       setEditingItem({ ...editingItem, plans: "all" });
-//                     }}
-//                     className="mr-2 text-blue-600 focus:ring-blue-500 dark:bg-gray-700"
-//                   />
-//                   <span className="text-gray-700 dark:text-gray-300">All Meal Plans</span>
-//                 </label>
-//                 <label className="flex items-center">
-//                   <input
-//                     type="radio"
-//                     name="applyTo"
-//                     value="specific"
-//                     checked={applyTo === "specific"}
-//                     onChange={() => {
-//                       setApplyTo("specific");
-//                       setEditingItem({ ...editingItem, plans: [] });
-//                     }}
-//                     className="mr-2 text-blue-600 focus:ring-blue-500 dark:bg-gray-700"
-//                   />
-//                   <span className="text-gray-700 dark:text-gray-300">Specific Meal Plans</span>
-//                 </label>
-//               </div>
-//             </div>
-//             {applyTo === "specific" && (
-//               <div>
-//                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Select Specific Plans</label>
-//                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-//                   {plans.map((plan) => (
-//                     <label key={plan._id} className="flex items-center">
-//                       <input
-//                         type="checkbox"
-//                         value={plan._id}
-//                         checked={selectedPlans.includes(plan._id)}
-//                         onChange={() => handleCheckboxChange(plan._id)}
-//                         className="mr-2 rounded text-blue-600 focus:ring-blue-500 dark:bg-gray-700"
-//                       />
-//                       <span className="text-gray-700 dark:text-gray-300">{plan.label}</span>
-//                     </label>
-//                   ))}
-//                 </div>
-//               </div>
-//             )}
-//           </div>
-//         </div>
-//         <div className="bg-gray-50 dark:bg-gray-700 px-6 py-4 flex justify-end space-x-4">
-//           <button
-//             onClick={closePopup}
-//             className="px-4 py-2 bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400"
-//           >
-//             Cancel
-//           </button>
-//           <button
-//             onClick={() => handleSave({ ...editingItem, selectedPlans })}
-//             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-//           >
-//             Save
-//           </button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default MealTypePopup;
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
 
 const predefinedMealTypeLabels = [
   "Basic Combo",
@@ -254,7 +11,7 @@ const predefinedMealTypeLabels = [
   "Vegan Combo",
 ];
 
-const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData }) => {
+const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData, mealTypes = [] }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [applyTo, setApplyTo] = useState("all");
@@ -263,6 +20,14 @@ const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData })
   const [Plans, setPlans] = useState([]);
   const [filteredSuggestions, setFilteredSuggestions] = useState(predefinedMealTypeLabels);
   const [showSuggestions, setShowSuggestions] = useState(false);
+
+  // Tracks missing fields
+  const [missingFields, setMissingFields] = useState({
+    label: false,
+    description: false,
+    prices: {},
+  });
+
 
   useEffect(() => {
     const mapMealPlans = async () => {
@@ -299,6 +64,25 @@ const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData })
     }
   }, [editingItem, Plans]);
 
+  const validateFields = () => {
+    const missingPrices = Plans.reduce((acc, plan) => {
+      if (!editingItem.prices[plan._id]) acc[plan._id] = true;
+      return acc;
+    }, {});
+
+    setMissingFields({
+      label: !editingItem.label?.trim(),
+      description: !editingItem.description?.trim(),
+      prices: missingPrices,
+    });
+
+    return (
+      !editingItem.label?.trim() ||
+      !editingItem.description?.trim() ||
+      Object.keys(missingPrices).length > 0
+    );
+  };
+
 
   // Modified to store labels instead of IDs
   const handleCheckboxChange = (plan) => {
@@ -311,16 +95,45 @@ const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData })
 
 
   const handlePriceChange = (_id, value) => {
-    setPrices({
-      ...prices,
-      [_id]: value
-    });
+    const updatedPrices = { ...editingItem.prices, [_id]: value };
+    setEditingItem({ ...editingItem, prices: updatedPrices });
+
+    if (value) {
+      setMissingFields((prev) => ({
+        ...prev,
+        prices: { ...prev.prices, [_id]: false },
+      }));
+    }
+  };
+  const checkForDuplicates = () => {
+    const editingMealTypeId = editingItem.mealTypeId;
+    // Check for duplicates in mealTypes & Details Both
+    const duplicateMealType = mealTypes.some(
+      (mealType) =>
+        mealType.mealTypeId !== editingMealTypeId &&
+        mealType.label.toLowerCase() === editingItem.label.trim().toLowerCase() &&
+        mealType.description.toLowerCase() === editingItem.description.trim().toLowerCase()
+    );
+
+    // Check for duplicates in mealtype only
+    const duplicateTypeOnly = mealTypes.some(
+      (mealType) =>
+        mealType.mealTypeId !== editingMealTypeId &&
+        mealType.label.toLowerCase() === editingItem.label.trim().toLowerCase()
+    );
+
+    return duplicateMealType || duplicateTypeOnly;
   };
 
-
   const handleSave = async () => {
-    if (!editingItem.label?.trim() || !editingItem.description?.trim()) {
-      setError("Label and description are required");
+
+    if (validateFields()) {
+      setError("Please fill all required fields.");
+      return;
+    }
+
+    if (checkForDuplicates()) {
+      setError("A meal type with the same name and details already exists.");
       return;
     }
 
@@ -409,22 +222,10 @@ const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData })
           </h3>
 
           <div className="space-y-2">
-            {/* <div>
-              <label htmlFor="label" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Label
-              </label>
-              <input
-                id="label"
-                type="text"
-                value={editingItem.label || ""}
-                onChange={(e) => setEditingItem({ ...editingItem, label: e.target.value })}
-                className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-              />
-            </div> */}
-
             <div>
               <label htmlFor="mealType" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Meal Type
+                Meal Type{" "}
+                {missingFields.label && <span className="text-red-500">*</span>}
               </label>
               <input
                 id="mealType"
@@ -432,7 +233,8 @@ const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData })
                 value={editingItem.label || ""}
                 onChange={handleMealTypeInputChange}
                 onFocus={() => setShowSuggestions(true)}
-                className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                className={`w-full p-3 border ${missingFields.label ? "border-red-500" : "border-gray-300"
+                  } rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white`}
                 placeholder="Enter or select a meal type"
               />
 
@@ -463,47 +265,36 @@ const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData })
 
             <div>
               <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Meal Details
+                Meal Details{" "}
+                {missingFields.description && <span className="text-red-500">*</span>}
               </label>
               <textarea
                 id="description"
                 placeholder="eg.,4 Roti • 1 Veg (12 Oz)/Non-Veg (12 Oz)"
                 value={editingItem.description || ""}
-                onChange={(e) => setEditingItem({ ...editingItem, description: e.target.value })}
-                className="text-sm w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white h-24 resize-none"
+                onChange={(e) => {
+                  setEditingItem({ ...editingItem, description: e.target.value });
+                  if (e.target.value.trim()) {
+                    setMissingFields((prev) => ({ ...prev, description: false }));
+                  }
+                }}
+                className={`w-full p-3 border ${missingFields.description ? "border-red-500" : "border-gray-300"
+                  } rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white`}
               />
             </div>
-
-
-            {/* <div >
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Price for each plan</label>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {Plans.map((plan) => (
-                  <div key={plan._id} className="flex items-center space-x-3">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300 w-1/3">{plan.label}</span>
-                    <input
-                      type="number"
-                      value={editingItem.prices[plan._id]}
-                      onChange={(e) => {
-                        const updatedPrices = { ...editingItem.prices, [plan._id]: e.target.value };
-                        setEditingItem({ ...editingItem, prices: updatedPrices });
-                      }}
-                      className="w-2/3 p-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div> */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Price for each plan (Select specific plans)
+                Price for each plan{" "}
+                {Object.keys(missingFields.prices).length > 0 && (
+                  <span className="text-red-500">*</span>
+                )}
               </label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 {Plans.map((plan) => (
                   <div key={plan._id} className="flex flex-col items-start space-y-1">
+
                     {/* Plan label */}
                     <div className="flex items-center space-x-2">
-                      {/* <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{plan.label}</span> */}
                       {/* Checkbox to select plan */}
                       {applyTo === "specific" && (
                         <label className="flex items-center">
@@ -519,17 +310,23 @@ const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData })
 
                       )}
                       <span className="text-sm font-medium text-gray-700 dark:text-gray-300 ">{plan.label}</span>
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {/* {plan.label}{" "} */}
+                        {missingFields.prices[plan._id] && (
+                          <span className="text-red-500">*</span>
+                        )}
+                      </span>
                     </div>
                     {/* Price input field */}
                     <input
                       type="number"
                       value={editingItem.prices[plan._id] || ""}
-                      onChange={(e) => {
-                        const updatedPrices = { ...editingItem.prices, [plan._id]: e.target.value };
-                        setEditingItem({ ...editingItem, prices: updatedPrices });
-                      }}
+                      onChange={(e) => handlePriceChange(plan._id, e.target.value)}
                       placeholder={`Price for ${plan.label}`}
-                      className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                      className={`w-full p-2 border ${missingFields.prices[plan._id]
+                        ? "border-red-500"
+                        : "border-gray-300"
+                        } rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white`}
                     />
                   </div>
                 ))}
@@ -566,28 +363,6 @@ const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData })
                   </label>
                 </div>
               </div>
-
-              {/* {applyTo === "specific" && (
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Select Plans
-                  </label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {Plans.map((plan) => (
-                      <label key={plan.label} className="flex items-center">
-                        <input
-                          type="checkbox"
-                          value={plan.label}
-                          checked={selectedPlans.includes(plan.label)}
-                          onChange={() => handleCheckboxChange(plan)}
-                          className="mr-2 rounded text-blue-600 focus:ring-blue-500 dark:bg-gray-700"
-                        />
-                        <span className="text-gray-700 dark:text-gray-300">{plan.label}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              )} */}
               {error && (
                 <div className="text-red-500 text-sm">
                   {error}

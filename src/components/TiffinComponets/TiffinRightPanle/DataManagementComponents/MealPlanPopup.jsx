@@ -8,13 +8,30 @@ const predefinedPlans = [
   "15 Days",
 ];
 
-const MealPlanPopup = ({ editingItem, setEditingItem, closePopup, refreshData }) => {
+const MealPlanPopup = ({ editingItem, setEditingItem, closePopup, refreshData, plans = [] }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredSuggestions, setFilteredSuggestions] = useState(predefinedPlans);
 
+  const checkForDuplicates = () => {
+    const editingPlanId = editingItem._id
+    // Check for duplicates in mealTypes & Details Both
+    const duplicatePlan = plans.some(
+      (plan) =>
+        plan._id !== editingPlanId &&
+        plan.label.toLowerCase() === editingItem.label.trim().toLowerCase()
+    );
+    return duplicatePlan;
+  };
+
   const handleSave = async () => {
+
+    if (checkForDuplicates()) {
+      setError("The plan is already exist please enter different plan");
+      return
+    }
+
     if (!editingItem.label?.trim()) {
       setError("Plan label is required");
       return;
@@ -83,24 +100,6 @@ const MealPlanPopup = ({ editingItem, setEditingItem, closePopup, refreshData })
           <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
             {editingItem._id ? "Edit Meal Plan" : "Add New Meal Plan"}
           </h3>
-
-          {/* <div className="space-y-4">
-            <div>
-              <label
-                htmlFor="label"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-              >
-                Label
-              </label>
-              <input
-                id="label"
-                type="text"
-                value={editingItem.label || ""}
-                onChange={(e) => setEditingItem({ ...editingItem, label: e.target.value })}
-                className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                placeholder="Enter plan name"
-              />
-            </div> */}
           <div className="space-y-4">
             <div>
               <label
