@@ -1,5 +1,5 @@
 import React from 'react'
-import TiffinSettings from '../components/TiffinComponets/TiffinRightPanle/ManageSettingComponets/TiffinSetting'
+import TiffinSettings from '../components/TiffinComponets/TiffinRightPanle/ManageSettingComponets/TiffinSettings'
 
 const ManageTiffinSeeting = () => {
   return (

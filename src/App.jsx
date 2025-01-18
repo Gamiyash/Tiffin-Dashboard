@@ -11,7 +11,7 @@ export default function App() {
       <Route element={<DashboardLayout />}>
 
         <Route path="/" element={<AddTiffin />} />
-        <Route path="/Tiffin-settings" element={<ManageTiffinSeeting />} />
+        <Route path="/outlet-info" element={<ManageTiffinSeeting />} />
         
       </Route>
     </Routes>

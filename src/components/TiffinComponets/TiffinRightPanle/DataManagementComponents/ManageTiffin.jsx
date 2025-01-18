@@ -518,11 +518,24 @@ const ManageTiffin = () => {
             <div className="bg-white w-full mx-auto mb-4">
                 <div className="flex flex-col md:flex-row gap-4">
                     <div className="flex flex-col max-w-[250px]">
-                        <img
-                            className="rounded-md w-[200px] h-[200px]"
-                            src="https://tiffinstash.com/cdn/shop/files/FoodEXPremiumVegTiffinService_dc8c57af-1b52-4e76-ac5e-4e87facb8c0b_1024x1024@2x.png?v=1708080733"
-                            alt="Tiffin Service"
-                        />
+                        <div className="relative">
+                            <img
+                                className="rounded-md w-[200px] h-[200px] "
+                                src="https://tiffinstash.com/cdn/shop/files/FoodEXPremiumVegTiffinService_dc8c57af-1b52-4e76-ac5e-4e87facb8c0b_1024x1024@2x.png?v=1708080733"
+                                alt="Tiffin Service"
+                            />
+                            <div className="flex gap-1 items-center absolute top-2 right-1">
+                                <div className="text-white bg-blue-500 rounded-full p-1 cursor-pointer">
+                                    <FiPlus size={10} />
+                                </div>
+                                <div className="text-white bg-blue-500 rounded-full p-1 cursor-pointer">
+                                    <FiEdit size={10} />
+                                </div>
+                                <div className="text-white bg-red-500 rounded-full p-1 cursor-pointer">
+                                    <FiTrash2 size={10}  />
+                                </div>
+                            </div>
+                        </div>
                         <div className="flex flex-wrap items-center gap-1 mt-1">
                             <img
                                 className="rounded-md w-12 h-12 object-cover"
@@ -562,7 +575,7 @@ const ManageTiffin = () => {
                                     onClick={() => handleAdd("plan")}
                                     className="text-sm font-semibold"
                                 >
-                                    <FiPlus />
+                                    <FiPlus size={16} />
                                 </button>
                                 <button
                                     onClick={() => handleEdit(plans.find((p) => p._id === selectedPlan), "plan")}
@@ -680,7 +693,7 @@ const ManageTiffin = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
             {
                 isEditing && editingItem.type === "mealType" && (
                     <MealTypePopup
