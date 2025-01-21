@@ -1,4 +1,3 @@
-// TimingInput.js
 import React from 'react';
 
 function TimingInput({ day, openTime, closeTime, onOpenChange, onCloseChange }) {

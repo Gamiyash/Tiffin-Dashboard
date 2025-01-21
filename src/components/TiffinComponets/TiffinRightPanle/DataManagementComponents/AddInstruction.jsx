@@ -151,6 +151,14 @@ const AddInstruction = () => {
 
   const handleSaveEdit = async (index) => {
 
+    if (
+      instructionData[index].title === editInstruction.title.trim() &&
+      instructionData[index].details === editInstruction.details.trim()
+    ) {
+      setEditingIndex(null);
+      return;
+    }
+
     if (checkForDuplicates()) {
       setError("A Instruction with the same title and details already exists.");
       return;
@@ -251,7 +259,7 @@ const AddInstruction = () => {
             className="bg-white border border-gray-200 p-4 rounded-lg shadow-sm"
           >
             {editingIndex === index ? (
-              <div>
+              <div className="space-y-1">
                 <input
                   type="text"
                   name="title"

@@ -364,10 +364,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FiEdit, FiPlus, FiTrash2, FiAlertCircle } from "react-icons/fi";
-import { dummyData } from "../../../../data/TiffinDummyData";
 import MealPlanPopup from "./MealPlanPopup";
 import MealTypePopup from "./MealTypePopup";
 import { HiOutlineInformationCircle } from "react-icons/hi";
+import ImageSelector from "./ManageImages";
 
 const ManageTiffin = () => {
     const [plans, setPlans] = useState([]);
@@ -377,7 +377,6 @@ const ManageTiffin = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [editingItem, setEditingItem] = useState(null);
     const [isFlexibleDates, setIsFlexibleDates] = useState(false);
-    // const [serviceDays, setServiceDays] = useState("");
     const [serviceDays, setServiceDays] = useState([]);
 
     const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -514,42 +513,10 @@ const ManageTiffin = () => {
 
 
     return (
-        <div className="font-inter h-full overflow-auto w-full mx-auto">
+        <div className="font-inter h-full overflow-auto w-full mx-auto p-1">
             <div className="bg-white w-full mx-auto mb-4">
                 <div className="flex flex-col md:flex-row gap-4">
-                    <div className="flex flex-col max-w-[250px]">
-                        <div className="relative">
-                            <img
-                                className="rounded-md w-[200px] h-[200px] "
-                                src="https://tiffinstash.com/cdn/shop/files/FoodEXPremiumVegTiffinService_dc8c57af-1b52-4e76-ac5e-4e87facb8c0b_1024x1024@2x.png?v=1708080733"
-                                alt="Tiffin Service"
-                            />
-                            <div className="flex gap-1 items-center absolute top-2 right-1">
-                                <div className="text-white bg-blue-500 rounded-full p-1 cursor-pointer">
-                                    <FiPlus size={10} />
-                                </div>
-                                <div className="text-white bg-blue-500 rounded-full p-1 cursor-pointer">
-                                    <FiEdit size={10} />
-                                </div>
-                                <div className="text-white bg-red-500 rounded-full p-1 cursor-pointer">
-                                    <FiTrash2 size={10}  />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="flex flex-wrap items-center gap-1 mt-1">
-                            <img
-                                className="rounded-md w-12 h-12 object-cover"
-                                src="https://tiffinstash.com/cdn/shop/files/FoodEXPremiumVegTiffinService_dc8c57af-1b52-4e76-ac5e-4e87facb8c0b_1024x1024@2x.png?v=1708080733"
-                                alt="Tiffin 1"
-                            />
-                            <img
-                                className="rounded-md w-12 h-12 object-cover"
-                                src="https://tiffinstash.com/cdn/shop/files/FoodEXPremiumVegTiffinService_dc8c57af-1b52-4e76-ac5e-4e87facb8c0b_1024x1024@2x.png?v=1708080733"
-                                alt="Tiffin 2"
-                            />
-
-                        </div>
-                    </div>
+                    <ImageSelector />
 
                     <div className="flex-1 space-y-4">
                         <h1 className="text-3xl font-medium">Krupa Mess & Tiffins</h1>
@@ -684,7 +651,7 @@ const ManageTiffin = () => {
                                 <div className="pr-2">
                                     <button
                                         onClick={handleSaveMealDays}
-                                        className="px-4 py-2 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                                        className="px-4 py-2 text-sm bg-red-500 text-white rounded-md hover:bg-red-600"
                                     >
                                         Save
                                     </button>

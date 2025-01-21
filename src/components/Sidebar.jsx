@@ -9,6 +9,7 @@ import {
   HiOutlineInformationCircle,
   HiOutlineQuestionMarkCircle,
 } from "react-icons/hi";
+import { IoBagCheckOutline } from "react-icons/io5";
 import { MdOutlineDining } from "react-icons/md";
 import { outletData } from "../data/dummy"; // Update the path as necessary  // Import dummy data
 
@@ -99,8 +100,9 @@ export default function Sidebar() {
       {/* Navigation links (dark theme) */}
       <nav className="flex-1 overflow-y-auto py-4">
         <ul className="space-y-1">
-          <li>{navItem("/Dashboard", HiOutlineHome, "Dashboard")}</li>
-          <li>{navItem("/", MdOutlineDining, "Tiffin")}</li>
+          <li>{navItem("/", HiOutlineHome, "Dashboard")}</li>
+          <li>{navItem("/orders", IoBagCheckOutline , "Orders")}</li>
+          <li>{navItem("/tiffin", MdOutlineDining, "Tiffin")}</li>
           <li>
             {navItem(
               "/taxes-charges",
@@ -110,7 +112,7 @@ export default function Sidebar() {
           </li>
           <li>{navItem("/offers", HiOutlineGift, "Offers")}</li>
           <li>
-            {navItem("/outlet-info", HiOutlineCog, "outlet-info")}
+            {navItem("/outlet-info", HiOutlineCog, "Outlet-info")}
           </li>
           <li>
             {/* {navItem("/outlet-info", HiOutlineInformationCircle, "Outlet info")} */}
