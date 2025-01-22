@@ -522,7 +522,20 @@ const ManageTiffin = () => {
                         <h1 className="text-3xl font-medium">Krupa Mess & Tiffins</h1>
 
                         <div className="">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Meal Plan</label>
+                            <div className="flex gap-2 items-center">
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Meal Plan</label>
+                                <div className="relative group">
+                                    <HiOutlineInformationCircle
+                                        size={15}
+                                        className="text-gray-600 cursor-pointer hover:text-gray-800"
+                                    />
+                                    <div
+                                        className="absolute w-[25vw] mt-4 top-full -left-16 hidden group-hover:flex items-center justify-center bg-gray-700 text-white text-xs rounded-md px-2 py-1 shadow-md"
+                                    >
+                                        <span>Meal plan is a predefined set of meals offered over a specific period, like trial, weekly, or monthly, for efficient meal delivery managemen</span>
+                                    </div>
+                                </div>
+                            </div>
                             <div className="flex items-center gap-2">
                                 {plans.length === 0 ?
                                     (<p className="w-full border p-2 text-sm rounded-md">Add Meal Plan</p>) :
@@ -560,7 +573,20 @@ const ManageTiffin = () => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Meal Details</label>
+                            <div className="flex gap-2 items-center">
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Meal Details</label>
+                                <div className="relative group">
+                                    <HiOutlineInformationCircle
+                                        size={15}
+                                        className="text-gray-600 cursor-pointer hover:text-gray-800"
+                                    />
+                                    <div
+                                        className="absolute w-[25vw] mt-2 top-full -left-16 hidden group-hover:flex items-center justify-center bg-gray-700 text-white text-xs rounded-md px-2 py-1 shadow-md"
+                                    >
+                                        <span>Meal types (e.g., Basic, Deluxe) include items like 4 roti, dal, with specific prices for each plan (Trial, Weekly, Monthly).</span>
+                                    </div>
+                                </div>
+                            </div>
                             <div className="flex items-center gap-2">
                                 {mealTypes.length === 0 ?
                                     (<p className="w-full border p-2 text-sm rounded-md">Add Meal Type</p>) :
@@ -604,7 +630,20 @@ const ManageTiffin = () => {
                         </div>
 
                         <div className="border border-gray-300 rounded-md p-3 flex flex-col gap-2 mr-2">
-                            <label htmlFor="" className="font-medium text-gray-700 text-sm">Meal Days</label>
+                            <div className="flex gap-2 items-center">
+                                <label htmlFor="" className="font-medium text-gray-700 text-sm">Meal Days</label>
+                                <div className="relative group mt-1">
+                                    <HiOutlineInformationCircle
+                                        size={15}
+                                        className="text-gray-600 cursor-pointer hover:text-gray-800"
+                                    />
+                                    <div
+                                        className="absolute w-[25vw] mt-2 top-full -left-32 hidden group-hover:flex items-center justify-center bg-gray-700 text-white text-xs rounded-md px-2 py-1 shadow-md"
+                                    >
+                                        <span>Meal days allow you to select which days the meal will be delivered (e.g., Monday, Wednesday, Friday).</span>
+                                    </div>
+                                </div>
+                            </div>
                             <div className="grid grid-cols-2 sm:grid-cols-3 gap-1">
                                 {daysOfWeek.map((day) => (
                                     <label key={day} className="flex items-center text-[13px]">
@@ -634,16 +673,15 @@ const ManageTiffin = () => {
                                         ></span>
                                     </div>
                                     <label className="font-medium text-gray-700">Flexible Order Dates</label>
-                                    <div className="relative group">
+                                    <div className="relative group mt-1">
                                         <HiOutlineInformationCircle
-                                            size={18}
+                                            size={15}
                                             className="text-gray-600 cursor-pointer hover:text-gray-800"
                                         />
                                         <div
                                             className="absolute w-[25vw] mt-4 top-full -left-32 hidden group-hover:flex items-center justify-center bg-gray-700 text-white text-xs rounded-md px-2 py-1 shadow-md"
                                         >
                                             <span>Enable Flexible Order Dates for orders (e.g., 7–10 Jan 2025). Users can also select specific dates like 2 Jan, 5 Jan, or 10 Jan</span>
-                                            {/* <span>Enable flexible start and end dates for orders (e.g., Start: 7/Jan/2025, End: 10/Jan/2025). Users can also select specific flexible dates for orders, such as 2/Jan, 5/Jan, and 10/Jan.</span> */}
                                         </div>
                                     </div>
                                 </div>
@@ -684,7 +722,20 @@ const ManageTiffin = () => {
                 )
             }
             <div className="Menu bg-white border-t-2 pt-2">
-                <h2 className="text-lg pb-2 font-medium">Meal Details</h2>
+                <div className="flex gap-2 items-center">
+                    <h2 className="text-lg pb-2 font-medium">Meal Details</h2>
+                    <div className="relative group mb-1">
+                        <HiOutlineInformationCircle
+                            size={15}
+                            className="text-gray-600 cursor-pointer hover:text-gray-800"
+                        />
+                        <div
+                            className="absolute w-32 mt-2 top-full -left-16 hidden group-hover:flex items-center justify-center bg-gray-700 text-white text-xs rounded-md px-2 py-1 shadow-md"
+                        >
+                            <span>List of all meal types</span>
+                        </div>
+                    </div>
+                </div>
                 <div className="space-y-1">
                     {mealTypes.map((type) => {
                         const hasMissingPrices = checkMissingPrices(type);

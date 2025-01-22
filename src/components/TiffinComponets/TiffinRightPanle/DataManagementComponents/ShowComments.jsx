@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { IoIosStar } from "react-icons/io";
+import { IoIosStar, IoIosStarHalf, IoIosStarOutline } from "react-icons/io";
 import { IoMdSwitch } from "react-icons/io";
 import { FaUndo } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import StarRating from "./StarRating";
 
 const restaurantReviews = [
   {
@@ -27,7 +28,7 @@ const restaurantReviews = [
     id: 3,
     imgSrc: "https://randomuser.me/api/portraits/men/15.jpg",
     altText: "Profile of Jim Halpert",
-    rating: 3.8,
+    rating: 4.0,
     reviewer: "Jim Halpert",
     reviewContent:
       "Decent food but slightly overpriced for the portion sizes. The location is convenient, though, and the atmosphere is cozy.",
@@ -42,6 +43,7 @@ const restaurantReviews = [
       "Absolutely loved it! The chef's special was out of this world, and the attention to detail in every dish was impressive. Highly recommend!",
   },
 ];
+
 
 const CommentList = ({ fullWidth = true, maxHeight = true }) => {
   const [column, setColumn] = useState(1);
@@ -66,9 +68,8 @@ const CommentList = ({ fullWidth = true, maxHeight = true }) => {
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-2">
           <span className="text-lg font-medium">Overall Average Rating:</span>
-          <div className="flex items-center text-xl font-bold text-red-500">
-            <IoIosStar className="mr-1" />
-            {calculateAverageRating()}
+          <div className="flex items-center text-xl font-bold text-yellow-500">
+            <StarRating rating={parseFloat(calculateAverageRating())} />
           </div>
         </div>
         <div className="flex gap-1">

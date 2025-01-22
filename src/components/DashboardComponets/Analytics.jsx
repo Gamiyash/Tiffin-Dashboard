@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, Legend, Bar, BarChart, CartesianGrid } from "recharts";
 import { FaChartLine } from "react-icons/fa";
 import { VscFeedback } from "react-icons/vsc";
+import { useNavigate } from "react-router-dom";
 
 export default function DashboardAnalytics() {
     const [activeTab, setActiveTab] = useState("daily");
+    const navigate = useNavigate();
 
     const data = {
         daily: [
@@ -52,7 +54,7 @@ export default function DashboardAnalytics() {
         { category: "Basic Combo", count: 65 },
         { category: "Premium Combo", count: 25 },
         { category: "Deluxe Combo", count: 10 },
-        { category: "Light Meal", count: 10 },,
+        { category: "Light Meal", count: 10 }, ,
     ];
 
     const tabs = ["daily", "weekly", "monthly"];
@@ -65,7 +67,9 @@ export default function DashboardAnalytics() {
             <div className="p-4 bg-white rounded shadow space-y-4 md:w-1/2 w-full">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-lg font-bold text-gray-700 flex items-center gap-2">
+                        <h1 className="text-lg cursor-pointer font-bold text-gray-700 flex items-center gap-2"
+                        onClick={()=> navigate("/orders")}
+                        >
                             <FaChartLine className="text-blue-500" />
                             Order Analytics
                         </h1>
@@ -105,9 +109,11 @@ export default function DashboardAnalytics() {
             {/* Customer Feedback */}
             <div className="w-full md:w-1/2 bg-white rounded-md shadow-md space-y-4 p-4">
                 <div>
-                    <h1 className="text-lg font-bold text-gray-700 flex items-center gap-2">
-                        <VscFeedback className="text-blue-500 font-bold" />Customer Feedback</h1>
-                    <p className="text-sm text-gray-500">Distribution of customer sentiment</p>
+                    <h1 className="text-lg cursor-pointer font-bold text-gray-700 flex items-center gap-2"
+                    onClick={()=> navigate("/tiffin")}
+                    >
+                        <FaChartLine className="text-blue-500" />MealTypes Analytics</h1>
+                    <p className="text-sm text-gray-500">Sales Overview Of MealTypes</p>
                 </div>
                 <div className="h-[300px]">
                     <ResponsiveContainer width="100%" height="100%">
