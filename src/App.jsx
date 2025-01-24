@@ -5,6 +5,7 @@ import AddTiffin from "./pages/Add-Tiffin"
 import ManageTiffinSeeting from "./pages/ManageTiffinSeeting";
 import DashboardHome from "./pages/DashboardHome";
 import Orders from "./pages/Orders";
+import TaxesAndChargesPage from "./pages/TaxesAndCharges";
 
 
 export default function App() {
@@ -16,8 +17,7 @@ export default function App() {
         <Route path="/orders" element={<Orders />} />
         <Route path="/tiffin" element={<AddTiffin />} />
         <Route path="/outlet-info" element={<ManageTiffinSeeting />} />
-
-
+        <Route path="/taxes-charges" element={<TaxesAndChargesPage />} />
       </Route>
     </Routes>
   );

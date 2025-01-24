@@ -16,7 +16,7 @@ const TiffinLeftPanel = ({ onselectComponet }) => {
     };
 
     return (
-        <div className="w-1/3 bg-gray-50 border-r border-gray-200 p-4 flex flex-col h-full overflow-y-auto custom-scrollbar">
+        <div className="w-1/3 bg-gray-50 border-r border-gray-200 p-4 flex flex-col h-full  custom-scrollbar">
             <section className="top-sec h-full">
                 <h1 className="text-xl font-semibold mb-4 text-gray-700">Tiffin Details</h1>
                 <div onClick={() => handleSelectedComponet("Manage-Tiffin")} className={`mb-2`}>

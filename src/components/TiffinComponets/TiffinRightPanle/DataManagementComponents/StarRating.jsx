@@ -1,5 +1,7 @@
 import React from 'react'
-import { IoIosStar, IoIosStarHalf, IoIosStarOutline } from "react-icons/io";
+import {
+    IoIosStar, IoIosStarHalf, IoIosStarOutline
+} from "react-icons/io";
 
 const StarRating = ({ rating }) => {
     const renderStars = () => {
@@ -11,8 +13,9 @@ const StarRating = ({ rating }) => {
         for (let i = 0; i < fullStars; i++) {
             stars.push(
                 <IoIosStar
+                    size={15}
                     key={`full-${i}`}
-                    className="text-yellow-500"
+                    className="text-yellow-400"
                 />
             );
         }
@@ -23,8 +26,9 @@ const StarRating = ({ rating }) => {
             if (decimalPart >= 0.3 && decimalPart <= 0.7) {
                 stars.push(
                     <IoIosStarHalf
+                        size={15}
                         key="half"
-                        className="text-yellow-500"
+                        className="text-yellow-400"
                     />
                 );
             }
@@ -32,8 +36,9 @@ const StarRating = ({ rating }) => {
             else if (decimalPart > 0.7) {
                 stars.push(
                     <IoIosStar
+                        size={15}
                         key="almost-full"
-                        className="text-yellow-500"
+                        className="text-yellow-400"
                     />
                 );
             }
@@ -41,8 +46,9 @@ const StarRating = ({ rating }) => {
             else {
                 stars.push(
                     <IoIosStarOutline
+                        size={15}
                         key="almost-empty"
-                        className="text-yellow-500"
+                        className="text-yellow-400"
                     />
                 );
             }
@@ -52,6 +58,7 @@ const StarRating = ({ rating }) => {
         for (let i = 0; i < remainingStars; i++) {
             stars.push(
                 <IoIosStarOutline
+                    size={15}
                     key={`empty-${i}`}
                     className="text-gray-300"
                 />
@@ -63,10 +70,10 @@ const StarRating = ({ rating }) => {
     return (
         <div>
             <div className="flex items-center gap-1">
-                {renderStars()}
                 <span className="ml-1 text-sm">
                     {rating.toFixed(1)}
                 </span>
+                {renderStars()}
             </div>
         </div>
     )

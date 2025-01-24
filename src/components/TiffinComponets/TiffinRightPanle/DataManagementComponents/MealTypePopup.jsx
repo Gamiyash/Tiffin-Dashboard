@@ -43,24 +43,26 @@ const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData, m
   }
 
   useEffect(() => {
-    if (editingItem) {
-      console.log("editing item plans (array):", editingItem.specificPlans);
-      console.log("Plans (object array):", Plans);
+    if (editingItem && Array.isArray(editingItem.specificPlans)) {
+      const allPlanValues = Plans.map(plan => plan.label);
+      console.log("AllPlans:", allPlanValues)
+      // Check if all plans are selected
+      const hasAllPlans =
+        editingItem.specificPlans.length === allPlanValues.length &&
+        editingItem.specificPlans.every(plan => allPlanValues.includes(plan));
+      console.log("HasAllPlans:", hasAllPlans);
 
-      // Get all plan labels from Plans objects
-      const allPlanLabels = Plans.map(plan => plan.label);
+      // Determine apply to based on plan selection
+      const newApplyTo = hasAllPlans ? "all" : "specific";
+      setApplyTo(newApplyTo);
+      console.log("newApplyto:", newApplyTo)
 
-      // Check if specificPlans array contains all plan labels
-      const hasAllPlans = editingItem.specificPlans &&
-        Array.isArray(editingItem.specificPlans) &&
-        editingItem.specificPlans.length === allPlanLabels.length &&
-        editingItem.specificPlans.every(plan => allPlanLabels.includes(plan));
-
-      // Set applyTo to "all" if all plans are selected, otherwise "specific"
-      setApplyTo(hasAllPlans ? "all" : "specific");
-
-      // Set selectedPlans from the specificPlans array
-      setSelectedPlans(editingItem.specificPlans || []);
+      // Set selected plans, filtering out any invalid plans
+      const normalizedPlans = editingItem.specificPlans.filter(plan =>
+        allPlanValues.includes(plan)
+      );
+      console.log("NormalizedPlans:", normalizedPlans);
+      setSelectedPlans(normalizedPlans);
     }
   }, [editingItem, Plans]);
 
@@ -83,11 +85,9 @@ const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData, m
     );
   };
 
-
-  // Modified to store labels instead of IDs
   const handleCheckboxChange = (plan) => {
     if (selectedPlans.includes(plan.label)) {
-      setSelectedPlans(selectedPlans.filter((label) => label !== plan.label));
+      setSelectedPlans(selectedPlans.filter((value) => value !== plan.label));
     } else {
       setSelectedPlans([...selectedPlans, plan.label]);
     }
@@ -213,6 +213,19 @@ const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData, m
     setShowSuggestions(false);
   };
 
+  const handleApplyToChange = (value) => {
+    setApplyTo(value);
+
+    if (value === "all") {
+      // Automatically select all plans when "all" is selected
+      const allPlanLabels = Plans.map((plan) => plan.label);
+      setSelectedPlans(allPlanLabels);
+    } else if (value === "specific") {
+      // Reset to the previously selected specific plans or empty
+      setSelectedPlans(editingItem.specificPlans || []);
+    }
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 backdrop-blur-sm">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-[90vw] md:w-[40vw] max-h-[90vh] overflow-auto">
@@ -305,13 +318,10 @@ const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData, m
                             onChange={() => handleCheckboxChange(plan)}
                             className="mr-2 rounded text-blue-600 focus:ring-blue-500 dark:bg-gray-700"
                           />
-                          {/* <span className="text-sm text-gray-700 dark:text-gray-300">Include</span> */}
                         </label>
-
                       )}
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300 ">{plan.label}</span>
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300 ">{plan.label} ({plan.label == 1 ? "Trial" : "Days"})</span>
                       <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {/* {plan.label}{" "} */}
                         {missingFields.prices[plan._id] && (
                           <span className="text-red-500">*</span>
                         )}
@@ -322,7 +332,7 @@ const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData, m
                       type="number"
                       value={editingItem.prices[plan._id] || ""}
                       onChange={(e) => handlePriceChange(plan._id, e.target.value)}
-                      placeholder={`Price for ${plan.label}`}
+                      placeholder={`Price for ${plan.label} (${plan.label == 1 ? "Trial" : "Days"})`}
                       className={`w-full p-2 border ${missingFields.prices[plan._id]
                         ? "border-red-500"
                         : "border-gray-300"
@@ -345,7 +355,7 @@ const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData, m
                       name="applyTo"
                       value="all"
                       checked={applyTo === "all"}
-                      onChange={() => setApplyTo("all")}
+                      onChange={() => handleApplyToChange("all")}
                       className="mr-2 text-blue-600 focus:ring-blue-500 dark:bg-gray-700"
                     />
                     <span className="text-gray-700 dark:text-gray-300">All Plans</span>
@@ -356,12 +366,13 @@ const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData, m
                       name="applyTo"
                       value="specific"
                       checked={applyTo === "specific"}
-                      onChange={() => setApplyTo("specific")}
+                      onChange={() => handleApplyToChange("specific")}
                       className="mr-2 text-blue-600 focus:ring-blue-500 dark:bg-gray-700"
                     />
                     <span className="text-gray-700 dark:text-gray-300">Specific Plans</span>
                   </label>
                 </div>
+
               </div>
               {error && (
                 <div className="text-red-500 text-sm">

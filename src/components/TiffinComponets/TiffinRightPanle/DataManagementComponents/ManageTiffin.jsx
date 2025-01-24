@@ -487,6 +487,7 @@ const ManageTiffin = () => {
                 setMealTypes(mealTypes.filter(mealType => mealType.mealTypeId !== item.mealTypeId));
             }
             alert(`${type === "plan" ? "Meal plan" : "Meal type"} deleted successfully.`);
+            window.location.reload();
         } catch (error) {
             console.error(`Error deleting ${type}:`, error);
             alert(`Failed to delete ${type === "plan" ? "meal plan" : "meal type"}.`);
@@ -517,10 +518,8 @@ const ManageTiffin = () => {
             <div className="bg-white w-full mx-auto mb-4">
                 <div className="flex flex-col md:flex-row gap-4">
                     <ImageSelector />
-
                     <div className="flex-1 space-y-4">
                         <h1 className="text-3xl font-medium">Krupa Mess & Tiffins</h1>
-
                         <div className="">
                             <div className="flex gap-2 items-center">
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Meal Plan</label>
@@ -546,7 +545,7 @@ const ManageTiffin = () => {
                                     >
                                         {plans.map((plan) => (
                                             <option key={plan._id} value={plan._id}>
-                                                {plan.label}
+                                                {plan.label} ({plan.label == 1 ? "Trial" :"Days"})
                                             </option>
                                         ))}
                                     </select>

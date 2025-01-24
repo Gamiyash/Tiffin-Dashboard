@@ -28,7 +28,7 @@ const restaurantReviews = [
     id: 3,
     imgSrc: "https://randomuser.me/api/portraits/men/15.jpg",
     altText: "Profile of Jim Halpert",
-    rating: 4.0,
+    rating: 0,
     reviewer: "Jim Halpert",
     reviewContent:
       "Decent food but slightly overpriced for the portion sizes. The location is convenient, though, and the atmosphere is cozy.",
@@ -67,10 +67,11 @@ const CommentList = ({ fullWidth = true, maxHeight = true }) => {
       {/* Average Rating and Filters */}
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-2">
-          <span className="text-lg font-medium">Overall Average Rating:</span>
-          <div className="flex items-center text-xl font-bold text-yellow-500">
+          {/* <span className="text-[16px] font-medium">Average Rating:</span> */}
+          <div className="flex items-center text-lg text-gray-600">
             <StarRating rating={parseFloat(calculateAverageRating())} />
           </div>
+          <span className="text-sm text-gray-600">(2.5K)</span>
         </div>
         <div className="flex gap-1">
           <button
