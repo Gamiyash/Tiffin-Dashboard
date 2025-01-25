@@ -84,10 +84,10 @@ export default function OrderDetails({ order, onStatusChange }) {
             <hr className="my-4" />
 
             <div className="grid grid-cols-3 gap-4 text-sm mb-4">
-                <div>
+                {/* <div>
                     <h4 className="font-semibold">Plan</h4>
                     <p className="text-gray-500">{order.plan}</p>
-                </div>
+                </div> */}
                 <div>
                     <h4 className="font-semibold">Meal Type</h4>
                     <p className="text-gray-500">{order.mealType}</p>
@@ -96,12 +96,16 @@ export default function OrderDetails({ order, onStatusChange }) {
                     <h4 className="font-semibold">Quantity</h4>
                     <p className="text-gray-500">{order.quantity}</p>
                 </div>
+                <div className="flex flex-col gap-1">
+                    <span className="text-sm font-semibold">Placed Time</span>
+                    <span className="text-sm text-gray-500">{order.time}</span>
+                </div>
             </div>
 
             <hr className="my-4" />
             <div className="flex justify-between items-center w-full">
                 <div className="w-[70%]">
-                    <h4 className="text-sm font-semibold mb-2">Flexible Plan</h4>
+                    <h4 className="text-sm font-semibold mb-2">Plan</h4>
                     {
                         order.flexiblePlan && order.flexiblePlan.type === "date-range" ? (
                             <div className="flex items-center text-sm text-gray-500">
@@ -114,6 +118,8 @@ export default function OrderDetails({ order, onStatusChange }) {
                                     ? new Date(order.flexiblePlan.endDate).toLocaleDateString("en-GB")
                                     : "N/A"}
                             </div>
+                        ) : order.flexiblePlan && order.flexiblePlan.type === "normal" ? (
+                            <span className="text-sm text-gray-500">{order.flexiblePlan.plan}</span>
                         ) : order.flexiblePlan && Array.isArray(order.flexiblePlan.flexiDates) ? (
                             <div className="flex flex-wrap gap-2">
                                 {order.flexiblePlan.flexiDates.map((date, index) => (
@@ -216,6 +222,6 @@ export default function OrderDetails({ order, onStatusChange }) {
                     </button>
                 )}
             </div>
-        </div>
+        </div >
     );
 }

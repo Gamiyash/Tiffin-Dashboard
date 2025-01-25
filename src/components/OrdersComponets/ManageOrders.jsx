@@ -124,11 +124,11 @@ const ManageOrders = () => {
             );
 
             // Update the order status in the local state
-            setRecentActivity((prevOrders) =>
-                prevOrders.map((order) =>
-                    order.id === updatedOrder.data.id ? updatedOrder.data : order
-                )
-            );
+            // setRecentActivity((prevOrders) =>
+            //     prevOrders.map((order) =>
+            //         order._id === updatedOrder.data._id ? updatedOrder.data : order
+            //     )
+            // );
         } catch (err) {
             console.error("Error updating sub-status:", err);
         }
@@ -154,15 +154,21 @@ const ManageOrders = () => {
     }, [originalOrders]);
 
 
+    // socket.on("orderStatusUpdated", (updatedOrder) => {
+    //     setRecentActivity((prevOrders) =>
+    //         prevOrders.map((order) =>
+    //             order._id === updatedOrder._id ? updatedOrder : order
+    //         )
+    //     );
+    // });
     useEffect(() => {
-        socket.on("orderStatusUpdated", (updatedOrder) => {
+        socket.on("subStatusUpdated", (order) => {
             setRecentActivity((prevOrders) =>
-                prevOrders.map((order) =>
-                    order._id === updatedOrder._id ? updatedOrder : order
+                prevOrders.map((Order) =>
+                    Order._id === order._id ? order : Order
                 )
             );
         });
-
         socket.on("bulkOrderStatusUpdated", ({ action, orders }) => {
             // Update the statuses of multiple orders at once
             setRecentActivity((prevOrders) =>
@@ -178,6 +184,21 @@ const ManageOrders = () => {
             socket.disconnect(); // Cleanup socket connection when component is unmounted
         };
     }, [socket]);
+
+    // useEffect(() => {
+    //     socket.on("subStatusUpdated", (updatedOrder) => {
+    //         setRecentActivity((prevOrders) =>
+    //             prevOrders.map((order) =>
+    //                 order.id === updatedOrder.id ? updatedOrder : order
+    //             )
+    //         );
+    //     });
+
+    //     return () => {
+    //         socket.off("subStatusUpdated");
+    //     };
+    // }, [socket]);
+
 
 
     //Filters
@@ -520,13 +541,13 @@ const ManageOrders = () => {
 
                                         {order.status === "Processing" && (
                                             <div className="flex justify-center items-center">
-                                                {order.subStatus.map((day) =>
-                                                    moment(day.date).isSame(moment(), "day") ? ( // Show buttons for today only
+                                                {/* {order.subStatus.map((day) =>
+                                                    moment(day.date).isSame(moment(), "day") ? (
                                                         <div
                                                             key={day.date}
                                                             className="flex items-center justify-between mb-1"
                                                         >
-                                                            {/* <span>{moment(day.date).format("DD MMM YYYY")}</span> */}
+                                                          
                                                             <div className="flex gap-2">
                                                                 {day.status === "Pending" && (
                                                                     <button
@@ -541,13 +562,31 @@ const ManageOrders = () => {
                                                                 {day.status === "Delivered" && (
                                                                     <span className="text-green-800 font-semibold text-xs flex gap-1 items-center">
                                                                         Delivered
-                                                                        {/* <span className="text-[8px]">({moment(day.date).format("DD")})</span> */}
+                                                                       
                                                                     </span>
                                                                 )}
                                                             </div>
                                                         </div>
                                                     ) : null
+                                                )} */}
+                                                {order.subStatus.map((day) =>
+                                                    moment(day.date).isSame(moment(), "day") ? ( // Show button only for today
+                                                        <div key={day.date} className="flex items-center gap-2">
+                                                            {day.status === "Pending" && (
+                                                                <button
+                                                                    onClick={() => updateSubStatus(order._id, day.date, "Delivered")}
+                                                                    className="px-2 py-1 bg-blue-500 text-white rounded text-xs"
+                                                                >
+                                                                    Deliver
+                                                                </button>
+                                                            )}
+                                                            {day.status === "Delivered" && (
+                                                                <span className="text-green-500 text-xs font-semibold">Delivered</span>
+                                                            )}
+                                                        </div>
+                                                    ) : null
                                                 )}
+
                                             </div>
                                         )}
                                     </td>
