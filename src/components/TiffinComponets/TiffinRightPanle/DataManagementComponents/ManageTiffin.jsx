@@ -416,7 +416,7 @@ const ManageTiffin = () => {
                 serviceDays,
                 isFlexibleDates,
             });
-            console.log("Response:", response.data);
+            // console.log("Response:", response.data);
             alert("Meal days and flexible dates updated successfully.");
         } catch (error) {
             console.error("Error updating meal days & flexible dates:", error);

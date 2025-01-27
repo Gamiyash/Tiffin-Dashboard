@@ -29,6 +29,9 @@ const ManageOrders = () => {
     const [reason, setReason] = useState("");
     const [sortOrderByDistance, setSortOrderByDistance] = useState("");
     const [distanceRange, setDistanceRange] = useState("");
+    const [bulkActionOrders, setBulkActionOrders] = useState([]);
+    const [bulkActionType, setBulkActionType] = useState(""); // Tracks the current bulk action
+
 
     const socket = useMemo(() => io(`${import.meta.env.VITE_BACKEND_URL}`), []);
 
@@ -64,7 +67,7 @@ const ManageOrders = () => {
             setshowReasonBox(!showReasonBox);
         }
         // Update status in local state immediately
-        const updatedOrders = originalOrders.map((order) =>
+        const updatedOrders = recentActivity.map((order) =>
             order._id === orderId ? { ...order, status: newStatus } : order
         );
         setRecentActivity(updatedOrders);
@@ -84,31 +87,144 @@ const ManageOrders = () => {
         }
     };
 
-    //Bulk Accept,Reject...
-    const handleBulkAction = async (action) => {
-        const orderIds = originalOrders.filter((order) => order.status === "New Order").map((order) => order._id);
+    // const handleBulkAction = async (action) => {
+    //     // Determine the orders to target based on the action
+    //     let orderIds = [];
 
-        if (orderIds.length === 0) return;
+    //     if (action === "All Accept" || action === "All Reject") {
+    //         orderIds = originalOrders
+    //             .filter((order) => order.status === "New Order")
+    //             .map((order) => order._id);
+    //     } else if (action === "Delivered All") {
+    //         orderIds = originalOrders
+    //             .filter((order) => order.status === "Processing")
+    //             .map((order) => order._id);
+    //     }
 
-        // Call the backend API to perform the bulk action
+    //     if (orderIds.length === 0) {
+    //         alert("No orders available for this action.");
+    //         return;
+    //     }
+
+    //     try {
+    //         // Call the backend API to perform the bulk action
+    //         const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/orders/bulk-action`, {
+    //             action,
+    //             orderIds,
+    //         });
+
+    //         const today = moment().startOf("day");
+
+    //         // Update the local state based on the action
+    //         if (action === "Delivered All") {
+    //             setRecentActivity((prevOrders) =>
+    //                 prevOrders.map((order) => {
+    //                     if (orderIds.includes(order._id) && order.status === "Processing") {
+    //                         const subStatusIndex = order.subStatus.findIndex((entry) =>
+    //                             moment(entry.date).isSame(today, "day")
+    //                         );
+
+    //                         const updatedSubStatus = [...order.subStatus];
+
+    //                         if (subStatusIndex !== -1) {
+    //                             updatedSubStatus[subStatusIndex].status = "Delivered";
+    //                         } else {
+    //                             updatedSubStatus.push({ date: today.toDate(), status: "Delivered" });
+    //                         }
+
+    //                         return { ...order, subStatus: updatedSubStatus };
+    //                     }
+    //                     return order;
+    //                 })
+    //             );
+    //         } else {
+    //             // Handle "All Accept" and "All Reject"
+    //             const newStatus = action === "All Accept" ? "Processing" : "Rejected";
+    //             setRecentActivity((prevOrders) =>
+    //                 prevOrders.map((order) =>
+    //                     orderIds.includes(order._id) ? { ...order, status: newStatus } : order
+    //                 )
+    //             );
+    //         }
+    //     } catch (err) {
+    //         console.error("Error performing bulk action:", err);
+    //     }
+    // };
+
+    const triggerBulkAction = (action) => {
+        // Determine orders applicable for the action
+        let applicableOrders = [];
+
+        if (action === "All Accept" || action === "All Reject") {
+            applicableOrders = originalOrders.filter((order) => order.status === "New Order");
+        } else if (action === "Delivered All") {
+            applicableOrders = originalOrders.filter((order) => order.status === "Processing");
+        }
+
+        if (applicableOrders.length === 0) {
+            alert("No orders available for this action.");
+            return;
+        }
+
+        // Mark all applicable orders as selected by default
+        setBulkActionOrders(applicableOrders.map((order) => ({ ...order, selected: true })));
+        setBulkActionType(action); // Save the action type
+    };
+
+    const applyBulkAction = async () => {
+        const selectedOrders = bulkActionOrders.filter((order) => order.selected);
+
+        if (selectedOrders.length === 0) {
+            alert("No orders selected for this action.");
+            return;
+        }
+
+        const orderIds = selectedOrders.map((order) => order._id);
+
         try {
-            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/orders/bulk-action`, {
-                action: action,
-                orderIds: orderIds,
+            // Call the backend API
+            await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/orders/bulk-action`, {
+                action: bulkActionType,
+                orderIds,
             });
-            console.log(response.data.message);
 
-            const updatedOrders = originalOrders.map((order) => {
-                if (orderIds.includes(order._id)) {
-                    let newStatus;
-                    if (action === "All Accept") newStatus = "Processing";
-                    if (action === "All Reject") newStatus = "Rejected";
-                    if (action === "Delivered All") newStatus = "Plan Completed";
-                    return { ...order, status: newStatus };
-                }
-                return order;
-            });
-            setRecentActivity(updatedOrders);
+            const today = moment().local().startOf("day").local();
+
+            // Update local state
+            if (bulkActionType === "Delivered All") {
+                setRecentActivity((prevOrders) =>
+                    prevOrders.map((order) => {
+                        if (orderIds.includes(order._id) && order.status === "Processing") {
+                            const subStatusIndex = order.subStatus.findIndex((entry) =>
+                                moment(entry.date).local().isSame(today, "day")
+                            );
+
+                            const updatedSubStatus = [...order.subStatus];
+
+                            if (subStatusIndex !== -1) {
+                                updatedSubStatus[subStatusIndex].status = "Delivered";
+                            } else {
+                                updatedSubStatus.push({ date: today.toDate(), status: "Delivered" });
+                            }
+
+                            return { ...order, subStatus: updatedSubStatus };
+                        }
+                        return order;
+                    })
+                );
+            } else {
+                const newStatus = bulkActionType === "All Accept" ? "Processing" : "Rejected";
+                setRecentActivity((prevOrders) =>
+                    prevOrders.map((order) =>
+                        orderIds.includes(order._id) ? { ...order, status: newStatus } : order
+                    )
+                );
+            }
+
+            // Clear bulk action state
+            setBulkActionOrders([]);
+            setBulkActionType("");
+            window.location.reload();
         } catch (err) {
             console.error("Error performing bulk action:", err);
         }
@@ -123,12 +239,12 @@ const ManageOrders = () => {
                 { date, status: newStatus }
             );
 
-            // Update the order status in the local state
-            // setRecentActivity((prevOrders) =>
-            //     prevOrders.map((order) =>
-            //         order._id === updatedOrder.data._id ? updatedOrder.data : order
-            //     )
-            // );
+            // Update local state with the backend's response
+            setRecentActivity((prevOrders) =>
+                prevOrders.map((order) =>
+                    order._id === updatedOrder._id ? updatedOrder : order
+                )
+            );
         } catch (err) {
             console.error("Error updating sub-status:", err);
         }
@@ -138,10 +254,10 @@ const ManageOrders = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             const updatedOrders = originalOrders.map((order) => {
-                const planEndDate = moment(order.time, "YYYY-MM-DD").add(order.plan, "days");
+                const planEndDate = moment(order.time, "YYYY-MM-DD").local().add(order.plan, "days");
                 if (
                     order.status === "Processing" &&
-                    moment().isAfter(planEndDate, "day")
+                    moment().local().isAfter(planEndDate, "day")
                 ) {
                     return { ...order, status: "Plan Completed" };
                 }
@@ -154,18 +270,12 @@ const ManageOrders = () => {
     }, [originalOrders]);
 
 
-    // socket.on("orderStatusUpdated", (updatedOrder) => {
-    //     setRecentActivity((prevOrders) =>
-    //         prevOrders.map((order) =>
-    //             order._id === updatedOrder._id ? updatedOrder : order
-    //         )
-    //     );
-    // });
     useEffect(() => {
+
         socket.on("subStatusUpdated", (order) => {
             setRecentActivity((prevOrders) =>
-                prevOrders.map((Order) =>
-                    Order._id === order._id ? order : Order
+                prevOrders.map((o) =>
+                    o._id === order._id ? { ...o, subStatus: order.subStatus, status: order.status } : o
                 )
             );
         });
@@ -185,20 +295,21 @@ const ManageOrders = () => {
         };
     }, [socket]);
 
-    // useEffect(() => {
-    //     socket.on("subStatusUpdated", (updatedOrder) => {
-    //         setRecentActivity((prevOrders) =>
-    //             prevOrders.map((order) =>
-    //                 order.id === updatedOrder.id ? updatedOrder : order
-    //             )
-    //         );
-    //     });
-
-    //     return () => {
-    //         socket.off("subStatusUpdated");
-    //     };
-    // }, [socket]);
-
+    const uniqueMealPlans = [
+        ...new Set(
+            originalOrders
+                .map((order) => {
+                    if (order.flexiblePlan.type === "normal") {
+                        return `${order.flexiblePlan.plan} Days`; // For normal plans, return the plan value
+                    } else if (order.flexiblePlan.type === "date-range") {
+                        return "Date Range Plan"; // Merge all date-range plans into one option
+                    } else if (order.flexiblePlan.type === "flexi-dates") {
+                        return "Flexi Dates Plan"; // Merge all flexi-dates plans into one option
+                    }
+                })
+                .filter(Boolean) // Filter out null/undefined values
+        ),
+    ];
 
 
     //Filters
@@ -214,14 +325,39 @@ const ManageOrders = () => {
 
         // Meal Plan Filter
         if (mealPlanFilter) {
-            filteredOrders = filteredOrders.filter((order) => order.plan === mealPlanFilter);
+            // Apply filtering based on the selected filter
+            filteredOrders = filteredOrders.filter((order) => {
+                if (!mealPlanFilter) return true; // If no filter is selected, show all orders
+
+                // For filtering, match the appropriate flexiPlan types
+                if (mealPlanFilter === "Date Range Plan" && order.flexiblePlan.type === "date-range") {
+                    return true;
+                }
+
+                if (mealPlanFilter === "Flexi Dates Plan" && order.flexiblePlan.type === "flexi-dates") {
+                    return true;
+                }
+
+                // For "Normal", filter orders based on the specific plan (7, 30, etc.)
+                if (mealPlanFilter === "Normal" && order.flexiblePlan.type === "normal") {
+                    return true;  // Matches all "Normal" type, no need to compare plan here
+                }
+
+                // For a specific "Normal" plan, compare with the filter value
+                if (mealPlanFilter !== "Normal" && order.flexiblePlan.type === "normal") {
+                    return `${order.flexiblePlan.plan} Days` === mealPlanFilter;
+                }
+
+                return false;
+
+            });
         }
 
         // Time Filter
         if (timeFilter) {
-            const currentDate = moment();
+            const currentDate = moment().local();
             filteredOrders = filteredOrders.filter((order) => {
-                const orderDate = moment(order.time, "YYYY-MM-DD");
+                const orderDate = moment(order.time, "YYYY-MM-DD").local();
                 switch (timeFilter) {
                     case "Today":
                         return orderDate.isSame(currentDate, "day");
@@ -329,27 +465,28 @@ const ManageOrders = () => {
         setRecentActivity(filteredActivity);
     }, [statusFilter]);
     return (
-        <div className="flex gap-4">
+        <div className="flex gap-4 max-h-screen overflow-y-auto">
             {/* Orders Table */}
             <div className="bg-white rounded shadow p-4 w-[65%]">
                 <div className="flex items-center justify-between mb-4">
                     <h2 className="text-lg font-semibold">Orders</h2>
                     <div className="space-x-2">
-                        {/* Meal Plan Filter */}
                         <select
-                            className="text-sm border border-gray-300 rounded px-2 py-1 cursor-pointer"
+                            className="text-xs border border-gray-300 rounded px-2 py-1 cursor-pointer"
                             value={mealPlanFilter}
                             onChange={handleMealPlanFilterChange}
                         >
                             <option value="">All Meal Plans</option>
-                            <option value="1">1</option>
-                            <option value="7">7</option>
-                            <option value="30">30</option>
+                            {uniqueMealPlans.map((plan, index) => (
+                                <option key={index} value={plan}>
+                                    {plan}
+                                </option>
+                            ))}
                         </select>
 
                         {/* Time Filter */}
                         <select
-                            className="text-sm border border-gray-300 rounded px-2 py-1 cursor-pointer"
+                            className="text-xs border border-gray-300 rounded px-2 py-1 cursor-pointer"
                             value={timeFilter}
                             onChange={handleTimeFilterChange}
                         >
@@ -358,6 +495,15 @@ const ManageOrders = () => {
                             <option value="This Week">This Week</option>
                             <option value="This Month">This Month</option>
                         </select>
+
+                        {bulkActionOrders.length > 0 && (
+                            <button
+                                onClick={applyBulkAction}
+                                className="px-2 py-2 bg-blue-500 text-white rounded text-xs"
+                            >
+                                Apply {bulkActionType}
+                            </button>
+                        )}
                     </div>
                 </div>
 
@@ -366,6 +512,7 @@ const ManageOrders = () => {
                         <thead>
 
                             <tr className="text-gray-500 border-b border-gray-400">
+
                                 <th className="py-2 px-2 text-center border-r w-1/6">
                                     <span className="">MealTypes</span>
                                 </th>
@@ -462,12 +609,12 @@ const ManageOrders = () => {
                                 <th className="py-1 text-center border-r">
                                     <select
                                         className="text-xs border border-gray-300 rounded px-1 py-1 cursor-pointer w-full"
-                                        onChange={(e) => handleBulkAction(e.target.value)}
+                                        onChange={(e) => triggerBulkAction(e.target.value)}
                                     >
                                         <option value="" className="text-xs">Actions</option>
                                         <option className="text-yellow-800 text-xs" value="All Accept">Accept All</option>
                                         <option className="text-red-800 text-xs" value="All Reject">Reject All</option>
-                                        <option className="text-green-800 text-xs" value="Delivered All">Delivered All</option>
+                                        <option className="text-green-800 text-xs" value="Delivered All">Mark Delivered</option>
                                     </select>
                                 </th>
                                 <th className="py-1 border-r text-center">
@@ -513,91 +660,84 @@ const ManageOrders = () => {
                                             {order.status}
                                         </span>
                                     </td>
-                                    <td className="py-2 px-2 border-r text-xs relative">
-                                        <div className="flex items-center gap-2 justify-center ">
-                                            {order.status === "New Order" && (
-                                                <>
-                                                    <span
-                                                        className="text-green-500 cursor-pointer"
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            statusChange(order._id, "Processing");
-                                                        }}
-                                                    >
-                                                        <MdDone size={20} />
-                                                    </span>
-                                                    <span
-                                                        className="text-red-500 cursor-pointer"
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            statusChange(order._id, "Rejected");
-                                                        }}
-                                                    >
-                                                        <MdOutlineCancel size={20} />
-                                                    </span>
-                                                </>
-                                            )}
-                                        </div>
-
-                                        {order.status === "Processing" && (
-                                            <div className="flex justify-center items-center">
-                                                {/* {order.subStatus.map((day) =>
-                                                    moment(day.date).isSame(moment(), "day") ? (
-                                                        <div
-                                                            key={day.date}
-                                                            className="flex items-center justify-between mb-1"
+                                    {bulkActionOrders.some((o) => o._id === order._id) ? (
+                                        <td className="py-2 px-2 border-r text-xs flex justify-center items-center">
+                                            <input
+                                                type="checkbox"
+                                                checked={
+                                                    bulkActionOrders.find((o) => o._id === order._id)?.selected
+                                                }
+                                                onChange={(e) =>
+                                                    setBulkActionOrders((prev) =>
+                                                        prev.map((o) =>
+                                                            o._id === order._id
+                                                                ? { ...o, selected: e.target.checked }
+                                                                : o
+                                                        )
+                                                    )
+                                                }
+                                            />
+                                        </td>
+                                    ) : (
+                                        <td className="py-2 px-2 border-r text-xs relative">
+                                            <div className="flex items-center gap-2 justify-center ">
+                                                {order.status === "New Order" && (
+                                                    <>
+                                                        <span
+                                                            className="text-green-500 cursor-pointer"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                statusChange(order._id, "Processing");
+                                                            }}
                                                         >
-                                                          
-                                                            <div className="flex gap-2">
-                                                                {day.status === "Pending" && (
+                                                            <MdDone size={20} />
+                                                        </span>
+                                                        <span
+                                                            className="text-red-500 cursor-pointer"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                statusChange(order._id, "Rejected");
+                                                            }}
+                                                        >
+                                                            <MdOutlineCancel size={20} />
+                                                        </span>
+                                                    </>
+                                                )}
+                                            </div>
+
+                                            {order.status === "Processing" && (
+                                                <div className="flex justify-center items-center">
+                                                    {order.subStatus.map((day) =>
+                                                        moment(day.date).local().isSame(moment().local(), "day") ? ( // Show button only for today
+                                                            <div key={day.date} className="flex items-center gap-2">
+                                                                {day.status === "Not Delivered" && (
                                                                     <button
-                                                                        onClick={() =>
-                                                                            updateSubStatus(order._id, day.date, "Delivered")
-                                                                        }
-                                                                        className="px-2 py-1 bg-gray-200 rounded text-xs"
+                                                                        onClick={() => updateSubStatus(order._id, day.date, "Delivered")}
+                                                                        className="px-2 py-1 bg-blue-500 text-white rounded text-xs"
                                                                     >
                                                                         Deliver
                                                                     </button>
                                                                 )}
                                                                 {day.status === "Delivered" && (
-                                                                    <span className="text-green-800 font-semibold text-xs flex gap-1 items-center">
-                                                                        Delivered
-                                                                       
-                                                                    </span>
+                                                                    <span className="text-green-500 text-xs font-semibold">Delivered</span>
                                                                 )}
                                                             </div>
-                                                        </div>
-                                                    ) : null
-                                                )} */}
-                                                {order.subStatus.map((day) =>
-                                                    moment(day.date).isSame(moment(), "day") ? ( // Show button only for today
-                                                        <div key={day.date} className="flex items-center gap-2">
-                                                            {day.status === "Pending" && (
-                                                                <button
-                                                                    onClick={() => updateSubStatus(order._id, day.date, "Delivered")}
-                                                                    className="px-2 py-1 bg-blue-500 text-white rounded text-xs"
-                                                                >
-                                                                    Deliver
-                                                                </button>
-                                                            )}
-                                                            {day.status === "Delivered" && (
-                                                                <span className="text-green-500 text-xs font-semibold">Delivered</span>
-                                                            )}
-                                                        </div>
-                                                    ) : null
-                                                )}
+                                                        ) : null
+                                                    )}
 
-                                            </div>
-                                        )}
-                                    </td>
+                                                </div>
+                                            )}
+                                        </td>
+                                    )}
+
                                     <td className="py-2 px-2 border-r text-center text-xs">{order.distance}</td>
                                 </tr>
                             ))}
                             <div className="">
                                 {/* Reason box */}
                                 {!showReasonBox && (
-                                    <div className="z-10 rounded-md shadow-sm absolute bg-white top-1/2 left-[62%] p-2 w-[20%]">
-                                        <h4 className="text-sm font-semibold">Reason for Rejection</h4>
+                                    <div className="z-20 rounded-md shadow-md absolute bg-gray-50 top-1/2 left-[62%] p-4 w-[20%]">
+                                        <h4 className="text-sm font-semibold pb-1 text-red-500">Reason for Rejection</h4>
                                         <textarea
                                             className="w-full border rounded p-2 resize-none "
                                             rows="2"
@@ -607,7 +747,7 @@ const ManageOrders = () => {
                                         />
                                         <div className="flex justify-end gap-2 mt-2">
                                             <button
-                                                className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 text-xs"
+                                                className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 text-xs"
                                                 onClick={handleSend}
                                             >
                                                 Send
