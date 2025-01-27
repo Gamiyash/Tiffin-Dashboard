@@ -648,13 +648,13 @@ const ManageOrders = () => {
                                     <td className="py-2 px-2 border-r text-center text-xs">{order.total}</td>
                                     <td className="py-2 px-2 border-r text-center text-xs">
                                         <span
-                                            className={`text-[9px] font-semibold px-2 py-1 rounded ${order.status === "New Order"
-                                                ? "bg-yellow-100 text-yellow-800"
+                                            className={`text-[10px] font-semibold px-2 py-1 rounded ${order.status === "New Order"
+                                                ? " text-yellow-500"
                                                 : order.status === "Plan Completed"
-                                                    ? "bg-green-100 text-green-800"
+                                                    ? " text-green-500"
                                                     : order.status === "Processing"
-                                                        ? "bg-blue-100 text-blue-800"
-                                                        : "bg-red-100 text-red-800"
+                                                        ? " text-blue-500"
+                                                        : " text-red-500"
                                                 }`}
                                         >
                                             {order.status}
