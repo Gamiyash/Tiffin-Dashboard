@@ -31,7 +31,7 @@ const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData, m
 
   useEffect(() => {
     const mapMealPlans = async () => {
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/menu`);
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/menu/gamiyash15@gmail.com`);
       setPlans(response.data.plans)
       // console.log("The Plans is:", response.data.plans)
     }
@@ -143,7 +143,7 @@ const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData, m
     try {
       if (editingItem.mealTypeId) {
         // Edit Meal Type
-        await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/edit-meal-type/${editingItem.mealTypeId}`, {
+        await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/edit-meal-type/${editingItem.mealTypeId}/gamiyash15@gmail.com`, {
           label: editingItem.label,
           description: editingItem.description,
           prices: editingItem.prices,
@@ -153,7 +153,7 @@ const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData, m
 
       } else {
         // Add Meal Type
-        const mealTypeResponse = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/add-meal-type`, {
+        const mealTypeResponse = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/add-meal-type/gamiyash15@gmail.com`, {
           label: editingItem.label,
           description: editingItem.description,
           prices: editingItem.prices,
@@ -167,7 +167,7 @@ const MealTypePopup = ({ editingItem, setEditingItem, closePopup, refreshData, m
           selectedPlans: applyTo === "all" ? Plans.map(plan => plan.label) : selectedPlans,
         };
 
-        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/apply-meal-plans`, planData);
+        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/apply-meal-plans/gamiyash15@gmail.com`, planData);
       }
 
       if (refreshData) {

@@ -6,6 +6,9 @@ import moment from "moment";
 // import { recentActivity } from "../../data/dummy";
 import io from "socket.io-client";
 import axios from "axios";
+import OrderWarningSystem from "./OrderWarningSystem";
+import AutoRejectedOrdersAlert from "./AutoRejectedOrdersAlert";
+import TodayOrdersSummary from "../DashboardComponets/TodaysOrderSummary";
 
 
 const ManageOrders = () => {
@@ -50,7 +53,7 @@ const ManageOrders = () => {
             setRecentActivity(response.data);
             setOriginalOrders(response.data);
             setSelectedOrder(response.data[0]);
-            // console.log("response is:", response.data[0]);
+            // console.log("response is:", response.data);
         }
 
         getOrders();
@@ -86,70 +89,6 @@ const ManageOrders = () => {
             setSelectedOrder({ ...selectedOrder, status: newStatus });
         }
     };
-
-    // const handleBulkAction = async (action) => {
-    //     // Determine the orders to target based on the action
-    //     let orderIds = [];
-
-    //     if (action === "All Accept" || action === "All Reject") {
-    //         orderIds = originalOrders
-    //             .filter((order) => order.status === "New Order")
-    //             .map((order) => order._id);
-    //     } else if (action === "Delivered All") {
-    //         orderIds = originalOrders
-    //             .filter((order) => order.status === "Processing")
-    //             .map((order) => order._id);
-    //     }
-
-    //     if (orderIds.length === 0) {
-    //         alert("No orders available for this action.");
-    //         return;
-    //     }
-
-    //     try {
-    //         // Call the backend API to perform the bulk action
-    //         const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/orders/bulk-action`, {
-    //             action,
-    //             orderIds,
-    //         });
-
-    //         const today = moment().startOf("day");
-
-    //         // Update the local state based on the action
-    //         if (action === "Delivered All") {
-    //             setRecentActivity((prevOrders) =>
-    //                 prevOrders.map((order) => {
-    //                     if (orderIds.includes(order._id) && order.status === "Processing") {
-    //                         const subStatusIndex = order.subStatus.findIndex((entry) =>
-    //                             moment(entry.date).isSame(today, "day")
-    //                         );
-
-    //                         const updatedSubStatus = [...order.subStatus];
-
-    //                         if (subStatusIndex !== -1) {
-    //                             updatedSubStatus[subStatusIndex].status = "Delivered";
-    //                         } else {
-    //                             updatedSubStatus.push({ date: today.toDate(), status: "Delivered" });
-    //                         }
-
-    //                         return { ...order, subStatus: updatedSubStatus };
-    //                     }
-    //                     return order;
-    //                 })
-    //             );
-    //         } else {
-    //             // Handle "All Accept" and "All Reject"
-    //             const newStatus = action === "All Accept" ? "Processing" : "Rejected";
-    //             setRecentActivity((prevOrders) =>
-    //                 prevOrders.map((order) =>
-    //                     orderIds.includes(order._id) ? { ...order, status: newStatus } : order
-    //                 )
-    //             );
-    //         }
-    //     } catch (err) {
-    //         console.error("Error performing bulk action:", err);
-    //     }
-    // };
 
     const triggerBulkAction = (action) => {
         // Determine orders applicable for the action
@@ -355,9 +294,12 @@ const ManageOrders = () => {
 
         // Time Filter
         if (timeFilter) {
-            const currentDate = moment().local();
+            const currentDate = moment();
+            console.log("current Date:", currentDate);
             filteredOrders = filteredOrders.filter((order) => {
-                const orderDate = moment(order.time, "YYYY-MM-DD").local();
+            //    const orderTime = order.time
+                const orderDate = moment(order.time).local();
+                console.log("order Date:", orderDate)
                 switch (timeFilter) {
                     case "Today":
                         return orderDate.isSame(currentDate, "day");
@@ -465,9 +407,27 @@ const ManageOrders = () => {
         setRecentActivity(filteredActivity);
     }, [statusFilter]);
     return (
-        <div className="flex gap-4 max-h-screen overflow-y-auto">
+        <div className="flex gap-2 max-h-screen overflow-y-auto">
             {/* Orders Table */}
-            <div className="bg-white rounded shadow p-4 w-[65%]">
+            <div className="bg-white rounded shadow p-3 w-[65%]">
+                <AutoRejectedOrdersAlert
+                    onOrderSelect={setSelectedOrder}
+                    socket={socket}
+                />
+                <OrderWarningSystem
+                    orders={recentActivity}
+                    onOrderSelect={(order) => {
+                        setSelectedOrder(order);
+                        const orderRow = document.querySelector(`tr[data-order-id="${order._id}"]`);
+                        if (orderRow) {
+                            orderRow.classList.add('bg-yellow-100');
+                            orderRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            setTimeout(() => {
+                                orderRow.classList.remove('bg-yellow-100');
+                            }, 10000);
+                        }
+                    }}
+                />
                 <div className="flex items-center justify-between mb-4">
                     <h2 className="text-lg font-semibold">Orders</h2>
                     <div className="space-x-2">
@@ -516,7 +476,7 @@ const ManageOrders = () => {
                                 <th className="py-2 px-2 text-center border-r w-1/6">
                                     <span className="">MealTypes</span>
                                 </th>
-                                <th className="py-2 px-2 text-center border-r w-1/6">
+                                <th className="py-2 px-2 text-center border-r w-32">
                                     <span>Customer</span>
                                 </th>
                                 <th className="py-2 px-2 text-center border-r w-24">
@@ -537,14 +497,32 @@ const ManageOrders = () => {
                                     </div>
                                 </th>
                                 <th className="px-2 py-2 text-center border-r w-1/6">
-                                    Status
+                                    <div className="relative group">Status
+                                        <div
+                                            className="absolute z-50 w-fit mt-4 top-full -left-32 hidden group-hover:flex items-center justify-center bg-gray-700 text-white text-xs rounded-md px-2 py-1 shadow-md"
+                                        >
+                                            <span className="text-[9px]">Enable Flexible Order Dates for orders (e.g., 7–10 Jan 2025). Users can also select specific dates like 2 Jan, 5 Jan, or 10 Jan</span>
+                                        </div>
+                                    </div>
                                 </th>
-                                <th className="px-2 py-2 text-center border-r">
-                                    Actions
+                                <th className="px-2 py-2 text-center border-r w-20 gap-1">
+                                    <span className="relative group mt-1">Actions
+                                        <div
+                                            className="absolute z-50 w-fit mt-4 top-full -left-32 hidden group-hover:flex items-center justify-center bg-gray-700 text-white text-xs rounded-md px-2 py-1 shadow-md"
+                                        >
+                                            <span className="text-[9px]">Enable Flexible Order Dates for orders (e.g., 7–10 Jan 2025). Users can also select specific dates like 2 Jan, 5 Jan, or 10 Jan</span>
+                                        </div>
+                                    </span>
                                 </th>
                                 <th className="border-r text-center py-2 flex gap-1 items-center justify-center">
-                                    <span>Distance</span>
-                                    <div className="flex items-center justify-center">
+                                    <div className="relative group mt-1">Distance
+                                        <div
+                                            className="absolute z-50 w-fit mt-4 top-full -left-32 hidden group-hover:flex items-center justify-center bg-gray-700 text-white text-xs rounded-md px-2 py-1 shadow-md"
+                                        >
+                                            <span className="text-[9px]">Enable Flexible Order Dates for orders (e.g., 7–10 Jan 2025). Users can also select specific dates like 2 Jan, 5 Jan, or 10 Jan</span>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center justify-center mt-1">
                                         <button
                                             onClick={() => handleSortByDistance("asc")}
                                             className="text-gray-600 hover:text-gray-800"
@@ -569,12 +547,11 @@ const ManageOrders = () => {
                                         value={mealTypeFilter}
                                         onChange={handleMealTypeFilterChange}
                                     >
-                                        <option className="text-xs" value="">MealTypes</option>
+                                        <option className="text-xs" value="">All</option>
                                         {[...new Set(originalOrders.map(order => order.mealType))].map(mealType => (
                                             <option key={mealType} value={mealType}>{mealType}</option>
                                         ))}
                                     </select>
-
                                 </th>
                                 <th className="py-1 text-center border-r w-1/6">
                                     <input
@@ -599,14 +576,14 @@ const ManageOrders = () => {
                                         value={statusFilter}
                                         onChange={(e) => setStatusFilter(e.target.value)}
                                     >
-                                        <option value="" className="text-xs">Status</option>
+                                        <option value="" className="text-xs">All Status</option>
                                         <option className="text-yellow-800 text-xs" value="New Order">New Order</option>
                                         <option className="text-blue-800 text-xs" value="Processing">Processing</option>
                                         <option className="text-green-800 text-xs" value="Plan Completed">PlanCompleted</option>
                                         <option className="text-red-800 text-xs" value="Rejected">Rejected</option>
                                     </select>
                                 </th>
-                                <th className="py-1 text-center border-r">
+                                <th className="py-1 text-center border-r w-20">
                                     <select
                                         className="text-xs border border-gray-300 rounded px-1 py-1 cursor-pointer w-full"
                                         onChange={(e) => triggerBulkAction(e.target.value)}
@@ -623,7 +600,7 @@ const ManageOrders = () => {
                                         value={distanceRange}
                                         onChange={(e) => handleDistanceRangeChange(e.target.value)}
                                     >
-                                        <option value="" className="text-xs">Distance Range</option>
+                                        <option value="" className="text-xs">All Ranges</option>
                                         <option value="0-2" className="text-xs">0-2 km</option>
                                         <option value="2-5" className="text-xs">2-5 km</option>
                                         <option value="5-10" className="text-xs">5-10 km</option>
@@ -640,6 +617,7 @@ const ManageOrders = () => {
                             {recentActivity.map((order) => (
                                 <tr
                                     key={order._id}
+                                    data-order-id={order._id}
                                     className={`border-b last:border-0 cursor-pointer ${selectedOrder._id === order._id ? "bg-gray-100" : ""}`}
                                     onClick={() => setSelectedOrder(order)}
                                 >
@@ -648,7 +626,7 @@ const ManageOrders = () => {
                                     <td className="py-2 px-2 border-r text-center text-xs">{order.total}</td>
                                     <td className="py-2 px-2 border-r text-center text-xs">
                                         <span
-                                            className={`text-[10px] font-semibold px-2 py-1 rounded ${order.status === "New Order"
+                                            className={`text-[10px] font-semibold py-1 rounded ${order.status === "New Order"
                                                 ? " text-yellow-500"
                                                 : order.status === "Plan Completed"
                                                     ? " text-green-500"
@@ -661,7 +639,7 @@ const ManageOrders = () => {
                                         </span>
                                     </td>
                                     {bulkActionOrders.some((o) => o._id === order._id) ? (
-                                        <td className="py-2 px-2 border-r text-xs flex justify-center items-center">
+                                        <td className="py-2 border-r text-xs flex justify-center items-center">
                                             <input
                                                 type="checkbox"
                                                 checked={
@@ -679,7 +657,7 @@ const ManageOrders = () => {
                                             />
                                         </td>
                                     ) : (
-                                        <td className="py-2 px-2 border-r text-xs relative">
+                                        <td className="py-2 border-r text-xs relative">
                                             <div className="flex items-center gap-2 justify-center ">
                                                 {order.status === "New Order" && (
                                                     <>
@@ -730,7 +708,7 @@ const ManageOrders = () => {
                                         </td>
                                     )}
 
-                                    <td className="py-2 px-2 border-r text-center text-xs">{order.distance}</td>
+                                    <td className="py-2 border-r text-center text-xs">{order.distance}</td>
                                 </tr>
                             ))}
                             <div className="">
@@ -765,6 +743,7 @@ const ManageOrders = () => {
             {/* Order Details */}
             <div className="w-[35%]">
                 <OrderDetails order={selectedOrder} onStatusChange={statusChange} />
+                {/* <TodayOrdersSummary orders={recentActivity} /> */}
             </div>
         </div >
     );

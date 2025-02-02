@@ -53,7 +53,7 @@ const AddInstruction = () => {
   useEffect(() => {
     const fetchInstructions = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/menu`);
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/menu/gamiyash15@gmail.com`);
         setInstructionData(response.data.instructions || []);
       } catch (err) {
         console.error("Error loading instructions:", err);
@@ -133,7 +133,7 @@ const AddInstruction = () => {
     setError("");
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/add-instruction`, {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/add-instruction/gamiyash15@gmail.com`, {
         title: newInstruction.title,
         details: newInstruction.details,
       });
@@ -173,7 +173,7 @@ const AddInstruction = () => {
 
     try {
       await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/api/edit-instruction/${instructionData[index]._id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/edit-instruction/${instructionData[index]._id}/gamiyash15@gmail.com`,
         {
           title: editInstruction.title,
           details: editInstruction.details,
@@ -197,7 +197,7 @@ const AddInstruction = () => {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/delete-instruction/${id}`);
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/delete-instruction/${id}/gamiyash15@gmail.com`);
       setInstructionData((prevData) => prevData.filter((instruction) => instruction._id !== id));
     } catch (err) {
       console.error("Error deleting instruction:", err);

@@ -43,12 +43,12 @@ const MealPlanPopup = ({ editingItem, setEditingItem, closePopup, refreshData, p
     try {
       if (editingItem._id) {
         console.log("editingItem._id", editingItem._id)
-        await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/edit-meal-plan/${editingItem._id}`, {
+        await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/edit-meal-plan/${editingItem._id}/gamiyash15@gmail.com`, {
           label: editingItem.label,
         });
       } else {
         console.log("editingItem._id", editingItem._id)
-        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/add-plan`, {
+        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/add-plan/gamiyash15@gmail.com`, {
           label: editingItem.label
         });
       }

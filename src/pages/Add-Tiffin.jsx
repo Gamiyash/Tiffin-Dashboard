@@ -15,9 +15,9 @@ export default function AddTiffin() {
     }, [selectedComponet]);
 
     return (
-        <div className="flex flex-col h-screen">
+        <div className="flex flex-col h-screen overflow-y-hidden">
             <TopBar title="Tiffin Dashboard" />
-            <div className="flex flex-1 overflow-hidden">
+            <div className="flex flex-1 overflow-y-hidden">
                 <TiffinLeftPanel
                     onselectComponet={setSelectedComponet} 
                 />
